@@ -21,6 +21,11 @@ class ListResponseArgs(parser: ArgParser) {
     val offset by parser.storing("-o", "--offset", help = "Offset").default(0)
 }
 
+class DeleteResponseArgs(parser: ArgParser) {
+    val match by parser.positional("MATCH", help = "Match response")
+    val regex by parser.flagging("-R", "--regex", help = "Match is regex").default(false)
+}
+
 fun new(message: Message): Response {
     val args = ArgParser(getArgs(message.content)).parseInto(::NewResponseArgs)
 
@@ -42,7 +47,8 @@ fun list(message: Message): List<Response> {
 
     return if (!args.regex) {
         transaction {
-            var response = Response.find { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like match or (ResponseTable.response like match)) }
+            var response =
+                Response.find { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like match or (ResponseTable.response like match)) }
             if (args.limit != 0) {
                 response = response.limit(args.limit as Int, offset = args.offset as Long)
             }
@@ -63,5 +69,27 @@ fun respond(message: Message): List<Response> {
     return transaction {
         val responses = Response.all().filter { it.trigger in message.content }
         if (responses.size > 10) responses.subList(0, 10) else responses
+    }
+}
+
+fun delete(message: Message): Response? {
+    val args = ArgParser(getArgs(message.content)).parseInto(::DeleteResponseArgs)
+    val match = "%${args.match}%"
+
+    return if (!args.regex) {
+        transaction {
+            val response =
+                Response.find { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like match) }
+                    .firstOrNull()
+            response?.delete()
+            response
+        }
+    } else {
+        transaction {
+            val response = Response.find { ResponseTable.guildId eq message.guildId!! }
+                .firstOrNull { it.trigger.matches(match.toRegex()) }
+            response?.delete()
+            response
+        }
     }
 }

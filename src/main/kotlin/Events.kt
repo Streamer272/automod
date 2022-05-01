@@ -14,7 +14,7 @@ fun BotBase.bindEvents() {
         }
 
         onMessageCreate { message ->
-            if (message.author.id == botId) {
+            if (message.author.id == botId || message.content.startsWith("!") || message.content.startsWith("\\")) {
                 return@onMessageCreate
             }
 
