@@ -1,3 +1,4 @@
+import com.jessecorbett.diskord.api.channel.Embed
 import com.jessecorbett.diskord.api.common.Message
 import com.jessecorbett.diskord.bot.BotBase
 import com.jessecorbett.diskord.bot.CommandBuilder
@@ -13,7 +14,7 @@ fun CommandBuilder.safeCommand(key: String, action: suspend BotContext.(Message)
         try {
             action(message)
         } catch (e: Exception) {
-            message.respond("you are gay ($e)")
+            channel(message.channelId).sendReply(message, embed = Embed.new(null, "you are gay ($e)", null))
         }
     }
 }
@@ -21,12 +22,12 @@ fun CommandBuilder.safeCommand(key: String, action: suspend BotContext.(Message)
 fun BotBase.bindCommands() {
     classicCommands("!") {
         safeCommand("ping") { message ->
-            message.respond("no")
+            channel(message.channelId).sendReply(message, embed = NoEmbed)
         }
 
         safeCommand("new") { message ->
             new(message)
-            message.respond("no")
+            channel(message.channelId).sendReply(message, embed = NoEmbed)
         }
 
         safeCommand("list") { message ->
