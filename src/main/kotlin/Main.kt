@@ -19,7 +19,6 @@ suspend fun main(args: Array<String>) {
     bot(dotenv.get("TOKEN") ?: throw Exception("No token found")) {
         events {
             onReady {
-                println("Ready!")
                 channel("806802320565993544").sendMessage("Hey there!")
             }
         }
@@ -27,6 +26,11 @@ suspend fun main(args: Array<String>) {
         classicCommands("!") {
             command("ping") {
                 it.respond("Pong!")
+            }
+
+            command("new") {
+                newResponse(it)
+                it.respond("ALRIGHT")
             }
         }
     }

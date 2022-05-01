@@ -16,12 +16,8 @@ repositories {
         name = "Github PKG"
         url = uri("https://maven.pkg.github.com/jofairden/discord.kt")
         credentials {
-            /**
-             * In order to access Github PKG, you need to enter your username and access token with the read:packages grant
-             * To create a personal access token, go to: https://github.com/settings/tokens
-             */
             username = "Streamer272"
-            password = "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"
+            password = "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"
         }
     }
 }
@@ -29,6 +25,7 @@ repositories {
 dependencies {
     implementation("com.jessecorbett:diskord-bot:2.1.1")
     implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
+    implementation("com.xenomachina:kotlin-argparser:2.0.7")
 
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
