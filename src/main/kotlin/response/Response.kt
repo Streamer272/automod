@@ -4,6 +4,7 @@ import com.jessecorbett.diskord.api.common.Message
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.default
 import getArgs
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -17,7 +18,7 @@ class NewResponseArgs(parser: ArgParser) {
 class ListResponseArgs(parser: ArgParser) {
     val match by parser.positional("MATCH", help = "Match response").default("")
     val regex by parser.flagging("-R", "--regex", help = "Match is regex").default(false)
-    val limit by parser.storing("-l", "--limit", help = "Limit").default(Int.MAX_VALUE)
+    val limit by parser.storing("-l", "--limit", help = "Limit").default(0)
     val offset by parser.storing("-o", "--offset", help = "Offset").default(0)
 }
 
@@ -41,17 +42,30 @@ fun list(message: Message): List<Response> {
     val args = ArgParser(getArgs(message.content)).parseInto(::ListResponseArgs)
     val match = "%${args.match}%"
 
-    return if (!args.regex)
+    return if (!args.regex) {
         transaction {
-            Response.find { ResponseTable.trigger like match or (ResponseTable.response like match) }
-                .limit(args.limit as Int, offset = args.offset as Long)
-                .toList()
+            if (args.limit != 0) {
+                println("${args.limit} ${args.offset}")
+                Response.find { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like match or (ResponseTable.response like match)) }
+                    .limit(args.limit as Int, offset = args.offset as Long)
+                    .toList()
+            } else {
+                Response.find { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like match or (ResponseTable.response like match)) }
+                    .toList()
+            }
         }
-    else
+    } else {
         transaction {
-            Response.all()
-                .limit(args.limit as Int, offset = args.offset as Long)
-                .filter { it.trigger.matches(match.toRegex()) or it.response.matches(match.toRegex()) }
-                .toList()
+            if (args.limit != 0) {
+                Response.all()
+                    .limit(args.limit as Int, offset = args.offset as Long)
+                    .filter { it.trigger.matches(match.toRegex()) or it.response.matches(match.toRegex()) }
+                    .toList()
+            } else {
+                Response.all()
+                    .filter { it.trigger.matches(match.toRegex()) or it.response.matches(match.toRegex()) }
+                    .toList()
+            }
         }
+    }
 }
