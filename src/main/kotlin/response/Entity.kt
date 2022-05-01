@@ -10,9 +10,9 @@ import org.jetbrains.exposed.dao.id.UUIDTable
 import java.util.UUID
 
 object ResponseTable : UUIDTable() {
-    val trigger = varchar("trigger", 256).uniqueIndex()
+    val trigger = varchar("trigger", 64).uniqueIndex()
     val caseSensitive = bool("case_sensitive").default(false)
-    val response = varchar("response", 512)
+    val response = varchar("response", 2048)
     val guildId = varchar("guild_id", 64)
 }
 
