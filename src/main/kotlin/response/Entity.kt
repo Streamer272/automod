@@ -1,4 +1,4 @@
-package entities
+package response
 
 import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.UUIDEntityClass
@@ -11,6 +11,7 @@ object ResponseTable : UUIDTable() {
     val regex = bool("regex").default(false)
     val caseSensitive = bool("case_sensitive").default(false)
     val response = varchar("response", 512)
+    val guildId = varchar("guild_id", 64)
 }
 
 class Response(id: EntityID<UUID>) : UUIDEntity(id) {
@@ -20,4 +21,5 @@ class Response(id: EntityID<UUID>) : UUIDEntity(id) {
     var regex by ResponseTable.regex
     var caseSensitive by ResponseTable.caseSensitive
     var response by ResponseTable.response
+    var guildId by ResponseTable.guildId
 }
