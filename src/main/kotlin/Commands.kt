@@ -3,8 +3,10 @@ import com.jessecorbett.diskord.bot.BotBase
 import com.jessecorbett.diskord.bot.CommandBuilder
 import com.jessecorbett.diskord.bot.BotContext
 import com.jessecorbett.diskord.bot.classicCommands
+import com.jessecorbett.diskord.util.sendReply
 import response.list
 import response.new
+import response.toEmbed
 
 fun CommandBuilder.safeCommand(key: String, action: suspend BotContext.(Message) -> Unit) {
     command(key) { message ->
@@ -29,7 +31,7 @@ fun BotBase.bindCommands() {
 
         safeCommand("list") { message ->
             val responses = list(message)
-            message.respond(responses.joinToString("\n"))
+            channel(message.channelId).sendReply(message, embed = responses.toEmbed())
         }
     }
 }

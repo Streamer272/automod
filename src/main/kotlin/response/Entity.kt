@@ -1,9 +1,8 @@
 package response
 
-import com.jessecorbett.diskord.api.common.Embed
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import com.jessecorbett.diskord.api.channel.Embed
+import com.jessecorbett.diskord.api.channel.EmbedField
+import new
 import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -26,31 +25,22 @@ class Response(id: EntityID<UUID>) : UUIDEntity(id) {
     var caseSensitive by ResponseTable.caseSensitive
     var response by ResponseTable.response
     var guildId by ResponseTable.guildId
-
-    override fun toString(): String {
-        return Json.encodeToString(ResponseDTO(
-            id = id.value.toString(),
-            trigger = trigger,
-            regex = regex,
-            caseSensitive = caseSensitive,
-            response = response,
-            guildId = guildId
-        ))
-    }
-
-    fun toEmbed(): Embed {
-        return Embed(
-            
-        )
-    }
 }
 
-@Serializable
-data class ResponseDTO(
-    val id: String,
-    val trigger: String,
-    val regex: Boolean,
-    val caseSensitive: Boolean,
-    val response: String,
-    val guildId: String
-)
+fun List<Response>.toEmbed(): Embed {
+    return Embed.new(
+        null,
+        null,
+        this.map {
+            EmbedField(
+                name = it.trigger,
+                value = """
+                Regex: ${it.regex}
+                Case Sensitive: ${it.caseSensitive}
+                Response: ${it.response}
+                """.trimIndent(),
+                inline = false
+            )
+        } as MutableList<EmbedField>,
+    )
+}
