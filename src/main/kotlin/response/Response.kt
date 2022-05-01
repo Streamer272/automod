@@ -10,7 +10,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 class NewResponseArgs(parser: ArgParser) {
     val trigger by parser.positional("TRIGGER", help = "Response trigger")
-    val regex by parser.flagging("-R", "--regex", help = "Trigger is regex").default(false)
     val caseSensitive by parser.flagging("-c", "--case-sensitive", help = "Trigger is case sensitive").default(false)
     val response by parser.positional("RESPONSE", help = "Response")
 }
@@ -28,7 +27,6 @@ fun new(message: Message): Response {
     val response = transaction {
         Response.new {
             trigger = args.trigger
-            regex = args.regex
             caseSensitive = args.caseSensitive
             response = args.response
             guildId = message.guildId!!
@@ -44,28 +42,27 @@ fun list(message: Message): List<Response> {
 
     return if (!args.regex) {
         transaction {
+            var response = Response.find { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like match or (ResponseTable.response like match)) }
             if (args.limit != 0) {
-                println("${args.limit} ${args.offset}")
-                Response.find { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like match or (ResponseTable.response like match)) }
-                    .limit(args.limit as Int, offset = args.offset as Long)
-                    .toList()
-            } else {
-                Response.find { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like match or (ResponseTable.response like match)) }
-                    .toList()
+                response = response.limit(args.limit as Int, offset = args.offset as Long)
             }
+            response.toList()
         }
     } else {
         transaction {
+            var response = Response.all()
             if (args.limit != 0) {
-                Response.all()
-                    .limit(args.limit as Int, offset = args.offset as Long)
-                    .filter { it.trigger.matches(match.toRegex()) or it.response.matches(match.toRegex()) }
-                    .toList()
-            } else {
-                Response.all()
-                    .filter { it.trigger.matches(match.toRegex()) or it.response.matches(match.toRegex()) }
-                    .toList()
+                response = response.limit(args.limit as Int, offset = args.offset as Long)
             }
+            response.filter { it.trigger.matches(match.toRegex()) or it.response.matches(match.toRegex()) }.toList()
         }
+    }
+}
+
+fun respond(message: Message): Response? {
+    val match = "%${message.content}%"
+
+    return transaction {
+        Response.find { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like match or (ResponseTable.response like match)) }.firstOrNull()
     }
 }

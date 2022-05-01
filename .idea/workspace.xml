@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":hammer: Refactors embeds">
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Commands.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Commands.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Embed.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Embed.kt" afterDir="false" />
+    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":hammer: Refactors all messages to embeds">
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Events.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Events.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/response/Entity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/response/Entity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/response/Response.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/response/Response.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,7 +140,7 @@
       <updated>1651386030413</updated>
       <workItem from="1651386031718" duration="2570000" />
       <workItem from="1651388621140" duration="4400000" />
-      <workItem from="1651401152111" duration="5908000" />
+      <workItem from="1651401152111" duration="6256000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: Initial commit">
       <created>1651389145071</created>
@@ -183,7 +184,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651406822320</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary=":hammer: Refactors all messages to embeds">
+      <created>1651407076376</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1651407076376</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -207,6 +215,7 @@
     <MESSAGE value=":construction: Adds list" />
     <MESSAGE value=":zap: Adds safe command" />
     <MESSAGE value=":hammer: Refactors embeds" />
-    <option name="LAST_COMMIT_MESSAGE" value=":hammer: Refactors embeds" />
+    <MESSAGE value=":hammer: Refactors all messages to embeds" />
+    <option name="LAST_COMMIT_MESSAGE" value=":hammer: Refactors all messages to embeds" />
   </component>
 </project>
