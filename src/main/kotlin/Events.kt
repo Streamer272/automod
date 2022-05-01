@@ -19,7 +19,7 @@ fun BotBase.bindEvents() {
             }
 
             val response = respond(message)
-            response?.let {
+            response.map {
                 channel(message.channelId).sendReply(message, it.response)
             }
         }

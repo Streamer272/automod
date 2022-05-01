@@ -59,10 +59,9 @@ fun list(message: Message): List<Response> {
     }
 }
 
-fun respond(message: Message): Response? {
-    val match = "%${message.content}%"
-
+fun respond(message: Message): List<Response> {
     return transaction {
-        Response.find { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like match or (ResponseTable.response like match)) }.firstOrNull()
+        val responses = Response.all().filter { it.trigger in message.content }
+        if (responses.size > 10) responses.subList(0, 10) else responses
     }
 }
