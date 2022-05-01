@@ -1,5 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val exposedVersion: String by project
+
 plugins {
     kotlin("jvm") version "1.6.20"
     application
@@ -27,6 +29,11 @@ repositories {
 dependencies {
     implementation("com.jessecorbett:diskord-bot:2.1.1")
     implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
+
+    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    implementation("org.postgresql:postgresql:42.3.3")
 
     testImplementation(kotlin("test"))
 }

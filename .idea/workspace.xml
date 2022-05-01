@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":tada: Initial commit">
-      <change afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":zap: Adds LICENSE and README.md">
+      <change afterPath="$PROJECT_DIR$/db.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/entities/Response.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +55,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin File" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -79,30 +86,14 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "show.migrate.to.gradle.popup": "false"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
   }
 }]]></component>
-  <component name="RunManager" selected="Gradle.automod [run]">
-    <configuration name="automod [run]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="run" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
+  <component name="RunManager">
     <configuration name="MainKt" type="JetRunConfigurationType" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="MainKt" />
       <module name="automod.main" />
@@ -111,11 +102,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Gradle.automod [run]" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -126,7 +112,7 @@
       <option name="presentableId" value="Default" />
       <updated>1651386030413</updated>
       <workItem from="1651386031718" duration="2570000" />
-      <workItem from="1651388621140" duration="700000" />
+      <workItem from="1651388621140" duration="1510000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: Initial commit">
       <created>1651389145071</created>
@@ -135,7 +121,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651389145071</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary=":zap: Adds LICENSE and README.md">
+      <created>1651389391909</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1651389391909</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -154,6 +147,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value=":tada: Initial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value=":tada: Initial commit" />
+    <MESSAGE value=":zap: Adds LICENSE and README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value=":zap: Adds LICENSE and README.md" />
   </component>
 </project>
