@@ -34,7 +34,10 @@ fun List<Response>.toEmbed(): Embed {
                 name = it.trigger,
                 value = """
                 Case Sensitive: ${it.caseSensitive}
-                Response: ${it.response}
+                Response: ${when(it.response.length) {
+                    in 0..256 -> it.response
+                    else -> "${it.response.substring(0..254)}..."
+                }}
                 """.trimIndent(),
                 inline = false
             )

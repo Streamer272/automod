@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":sparkles: Adds clean command">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/response/Entity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/response/Entity.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,6 +144,7 @@
       <workItem from="1651388621140" duration="4400000" />
       <workItem from="1651401152111" duration="2040000" />
       <workItem from="1651412389438" duration="13000" />
+      <workItem from="1651412933394" duration="16000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: Initial commit">
       <created>1651389145071</created>
