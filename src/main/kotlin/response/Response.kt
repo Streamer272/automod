@@ -5,6 +5,7 @@ import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.default
 import getArgs
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -43,7 +44,10 @@ fun new(message: Message): Response {
 
 fun list(message: Message): List<Response> {
     val args = ArgParser(getArgs(message.content)).parseInto(::ListResponseArgs)
-    val match = "%${args.match}%"
+    val match = when (args.regex) {
+        true -> args.match
+        false -> "%${args.match}%"
+    }
 
     return if (!args.regex) {
         transaction {
@@ -74,7 +78,10 @@ fun respond(message: Message): List<Response> {
 
 fun delete(message: Message): Response? {
     val args = ArgParser(getArgs(message.content)).parseInto(::DeleteResponseArgs)
-    val match = "%${args.match}%"
+    val match = when (args.regex) {
+        true -> args.match
+        false -> "%${args.match}%"
+    }
 
     return if (!args.regex) {
         transaction {
@@ -91,5 +98,11 @@ fun delete(message: Message): Response? {
             response?.delete()
             response
         }
+    }
+}
+
+fun clean(message: Message) {
+    transaction {
+        ResponseTable.deleteWhere { ResponseTable.guildId eq message.guildId!! }
     }
 }

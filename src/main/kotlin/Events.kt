@@ -1,6 +1,5 @@
 import com.jessecorbett.diskord.bot.BotBase
 import com.jessecorbett.diskord.bot.events
-import com.jessecorbett.diskord.util.sendMessage
 import com.jessecorbett.diskord.util.sendReply
 import response.respond
 
@@ -9,7 +8,6 @@ fun BotBase.bindEvents() {
 
     events {
         onReady {
-            channel("806802320565993544").sendMessage("Hey there!")
             botId = it.user.id
         }
 

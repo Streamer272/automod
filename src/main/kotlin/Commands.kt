@@ -6,10 +6,7 @@ import com.jessecorbett.diskord.bot.CommandBuilder
 import com.jessecorbett.diskord.bot.BotContext
 import com.jessecorbett.diskord.bot.classicCommands
 import com.jessecorbett.diskord.util.sendReply
-import response.delete
-import response.list
-import response.new
-import response.toEmbed
+import response.*
 
 fun CommandBuilder.safeCommand(key: String, block: suspend BotContext.(Message) -> Unit) {
     command(key) { message ->
@@ -39,6 +36,11 @@ fun BotBase.bindCommands() {
 
         safeCommand("delete") { message ->
             delete(message)
+            channel(message.channelId).sendReply(message, embed = NoEmbed)
+        }
+
+        safeCommand("clean") { message ->
+            clean(message)
             channel(message.channelId).sendReply(message, embed = NoEmbed)
         }
 
