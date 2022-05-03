@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":zap: Adds command aliases">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/response/Response.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/response/Response.kt" afterDir="false" />
-    </list>
+    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":zap: Adds command aliases" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -72,8 +69,8 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="bug/security" />
-                    <option name="lastUsedInstant" value="1651595540" />
+                    <option name="branchName" value="feature/trolling" />
+                    <option name="lastUsedInstant" value="1651597730" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="main" />

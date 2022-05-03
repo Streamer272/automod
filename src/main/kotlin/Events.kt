@@ -1,3 +1,4 @@
+import com.jessecorbett.diskord.api.common.UserStatus
 import com.jessecorbett.diskord.bot.BotBase
 import com.jessecorbett.diskord.bot.events
 import com.jessecorbett.diskord.util.sendReply
@@ -9,6 +10,7 @@ fun BotBase.bindEvents() {
     events {
         onReady {
             botId = it.user.id
+            setStatus("Fucking your mom", UserStatus.DO_NOT_DISTURB)
         }
 
         onMessageCreate { message ->
