@@ -33,21 +33,29 @@ fun BotBase.bindCommands() {
         }
 
         safeCommand("new") { message ->
+            assertAdmin(message, this)
+
             new(message)
             channel(message.channelId).sendReply(message, embed = NoEmbed)
         }
 
         safeCommand("list") { message ->
+            assertAdmin(message, this)
+
             val responses = list(message)
             channel(message.channelId).sendReply(message, embed = responses.toEmbed())
         }
 
         safeCommand("delete") { message ->
+            assertAdmin(message, this)
+
             delete(message)
             channel(message.channelId).sendReply(message, embed = NoEmbed)
         }
 
         safeCommand("clean") { message ->
+            assertAdmin(message, this)
+
             clean(message)
             channel(message.channelId).sendReply(message, embed = NoEmbed)
         }
@@ -70,12 +78,8 @@ fun BotBase.bindCommands() {
 suspend fun assertAdmin(message: Message, context: BotContext) {
     with(context) {
         val author = message.guild!!.getMember(message.authorId)
-        println("2 $author")
-        val roles = message.guild!!.getRoles()
-        println("3 $roles")
-        val rolesString = roles.filter { it.permissions.contains(com.jessecorbett.diskord.api.common.Permission.ADMINISTRATOR) }.map { println("${it.name} is admin"); it.id }
-        println("4 $roles")
-        val isAdmin = author.roleIds.any { rolesString.contains(it) }
+        val roles = message.guild!!.getRoles().filter { it.permissions.contains(com.jessecorbett.diskord.api.common.Permission.ADMINISTRATOR) }.map { println("${it.name} is admin"); it.id }
+        val isAdmin = author.roleIds.any { roles.contains(it) }
         if (!isAdmin) throw SussyException("fuck you")
     }
 }

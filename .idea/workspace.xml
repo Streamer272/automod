@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":zap: Adds custom exception">
+    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":zap: Adds compiler option">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Commands.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Commands.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,7 +159,7 @@
       <workItem from="1651513284197" duration="157000" />
       <workItem from="1651513455788" duration="2966000" />
       <workItem from="1651516441104" duration="3436000" />
-      <workItem from="1651553942683" duration="913000" />
+      <workItem from="1651553942683" duration="1650000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: Initial commit">
       <created>1651389145071</created>
@@ -204,7 +203,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651519875720</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary=":zap: Adds compiler option">
+      <created>1651555165922</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1651555165923</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -229,7 +235,8 @@
     <MESSAGE value=":sparkles: Adds delete" />
     <MESSAGE value=":bug: Fixes response too long" />
     <MESSAGE value=":zap: Adds custom exception" />
-    <option name="LAST_COMMIT_MESSAGE" value=":zap: Adds custom exception" />
+    <MESSAGE value=":zap: Adds compiler option" />
+    <option name="LAST_COMMIT_MESSAGE" value=":zap: Adds compiler option" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
