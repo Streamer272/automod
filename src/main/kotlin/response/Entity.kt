@@ -2,7 +2,7 @@ package response
 
 import com.jessecorbett.diskord.api.channel.Embed
 import com.jessecorbett.diskord.api.channel.EmbedField
-import new
+import bot.customEmbed
 import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -24,7 +24,7 @@ class Response(id: EntityID<UUID>) : UUIDEntity(id) {
 }
 
 fun List<Response>.toEmbed(): Embed {
-    return Embed.new(
+    return Embed.customEmbed(
         null,
         null,
         this.map {

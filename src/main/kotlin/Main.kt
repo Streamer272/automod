@@ -1,3 +1,4 @@
+import bot.bindEvents
 import com.jessecorbett.diskord.bot.bot
 import response.ResponseTable
 import io.github.cdimascio.dotenv.Dotenv

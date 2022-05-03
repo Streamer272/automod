@@ -1,3 +1,5 @@
+package bot
+
 import com.jessecorbett.diskord.api.channel.Embed
 import com.jessecorbett.diskord.api.channel.EmbedField
 import com.jessecorbett.diskord.api.common.*
@@ -22,7 +24,7 @@ fun CommandBuilder.customCommand(vararg key: String, block: suspend BotContext.(
                     else -> "you are gay (${e.message})"
                 }
                 if (e !is SussyException) e.printStackTrace()
-                channel(message.channelId).sendReply(message, embed = Embed.new(null, description, null))
+                channel(message.channelId).sendReply(message, embed = Embed.customEmbed(null, description, null))
             }
         }
     }
@@ -72,7 +74,7 @@ fun BotBase.bindCommands() {
             commands.add(EmbedField("l | list", "List all responses", false))
             commands.add(EmbedField("d | delete", "Delete a response", false))
 
-            channel(message.channelId).sendReply(message, embed = Embed.new("hElP mE", "(you are retarded and cant write single fucking command)", commands))
+            channel(message.channelId).sendReply(message, embed = Embed.customEmbed("hElP mE", "(you are retarded and cant write single fucking command)", commands))
         }
     }
 }

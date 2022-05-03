@@ -1,3 +1,5 @@
+package bot
+
 import com.jessecorbett.diskord.api.common.UserStatus
 import com.jessecorbett.diskord.bot.BotBase
 import com.jessecorbett.diskord.bot.events
