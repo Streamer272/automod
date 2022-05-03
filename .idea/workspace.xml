@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":bug: Fixes assert admin">
+    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":zap: Adds command aliases">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Commands.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Commands.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Embed.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Embed.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/response/Response.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/response/Response.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,7 +212,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651555165923</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary=":zap: Adds command aliases">
+      <created>1651596017765</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1651596017766</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -239,7 +245,8 @@
     <MESSAGE value=":bug: Fixes response too long" />
     <MESSAGE value=":zap: Adds custom exception" />
     <MESSAGE value=":zap: Adds compiler option" />
-    <option name="LAST_COMMIT_MESSAGE" value=":zap: Adds compiler option" />
+    <MESSAGE value=":zap: Adds command aliases" />
+    <option name="LAST_COMMIT_MESSAGE" value=":zap: Adds command aliases" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

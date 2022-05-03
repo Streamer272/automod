@@ -4,10 +4,10 @@ import com.jessecorbett.diskord.api.common.Message
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.default
 import getArgs
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.or
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.util.*
 
 class NewResponseArgs(parser: ArgParser) {
     val trigger by parser.positional("TRIGGER", help = "Response trigger")
@@ -71,8 +71,20 @@ fun list(message: Message): List<Response> {
 
 fun respond(message: Message): List<Response> {
     return transaction {
-        val responses = Response.all().filter { it.trigger in message.content }
-        if (responses.size > 10) responses.subList(0, 10) else responses
+        val conn = TransactionManager.current().connection
+        val statement = conn.prepareStatement("SELECT * FROM response WHERE ? like '%' || trigger || '%' AND guild_id = ?", false)
+        statement.fillParameters(listOf(Pair(VarCharColumnType(), message.content), Pair(VarCharColumnType(), message.guildId)))
+        val result = statement.executeQuery()
+
+        val responses = mutableListOf<Response>()
+        var i = 0
+        while (result.next() && i++ < 10) {
+            val id = result.getString("id")
+            val uuid = UUID.fromString(id)
+            responses += Response.findById(uuid)!!
+        }
+
+        responses
     }
 }
 
