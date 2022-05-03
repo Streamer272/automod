@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":bug: Fixes response too long">
+    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":zap: Adds custom exception">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Commands.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Commands.kt" afterDir="false" />
     </list>
@@ -159,7 +159,8 @@
       <workItem from="1651412933394" duration="16000" />
       <workItem from="1651513284197" duration="157000" />
       <workItem from="1651513455788" duration="2966000" />
-      <workItem from="1651516441104" duration="3119000" />
+      <workItem from="1651516441104" duration="3436000" />
+      <workItem from="1651553942683" duration="913000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: Initial commit">
       <created>1651389145071</created>
@@ -196,7 +197,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651410309604</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary=":zap: Adds custom exception">
+      <created>1651519875720</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1651519875720</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -220,7 +228,8 @@
     <MESSAGE value=":bug: Fixes respond to return multiple responses" />
     <MESSAGE value=":sparkles: Adds delete" />
     <MESSAGE value=":bug: Fixes response too long" />
-    <option name="LAST_COMMIT_MESSAGE" value=":bug: Fixes response too long" />
+    <MESSAGE value=":zap: Adds custom exception" />
+    <option name="LAST_COMMIT_MESSAGE" value=":zap: Adds custom exception" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

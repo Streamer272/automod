@@ -3,12 +3,13 @@ import com.jessecorbett.diskord.api.channel.EmbedField
 import com.jessecorbett.diskord.api.common.*
 import com.jessecorbett.diskord.bot.BotBase
 import com.jessecorbett.diskord.bot.CommandBuilder
-import com.jessecorbett.diskord.bot.BotContext
 import com.jessecorbett.diskord.bot.classicCommands
+import com.jessecorbett.diskord.util.authorId
 import com.jessecorbett.diskord.util.sendReply
 import response.*
+import com.jessecorbett.diskord.bot.BotContext
 
-class CustomException(message: String) : Exception(message)
+class SussyException(message: String) : Exception(message)
 
 fun CommandBuilder.safeCommand(key: String, block: suspend BotContext.(Message) -> Unit) {
     command(key) { message ->
@@ -16,10 +17,10 @@ fun CommandBuilder.safeCommand(key: String, block: suspend BotContext.(Message) 
             block(message)
         } catch (e: Exception) {
             val description = when (e) {
-                is CustomException -> e.toString()
-                else -> "you are gay ($e)"
+                is SussyException -> e.message
+                else -> "you are gay (${e.message})"
             }
-            if (e !is CustomException) e.printStackTrace()
+            if (e !is SussyException) e.printStackTrace()
             channel(message.channelId).sendReply(message, embed = Embed.new(null, description, null))
         }
     }
@@ -52,7 +53,7 @@ fun BotBase.bindCommands() {
         }
 
         safeCommand("") { message ->
-            assertAdmin(message)
+            assertAdmin(message, this)
 
             val commands: MutableList<EmbedField> = mutableListOf()
 
@@ -66,6 +67,15 @@ fun BotBase.bindCommands() {
     }
 }
 
-suspend fun assertAdmin(message: Message) {
-//    if (!message.author.isAdmin()) throw CustomException("you are not an admin")
+suspend fun assertAdmin(message: Message, context: BotContext) {
+    with(context) {
+        val author = message.guild!!.getMember(message.authorId)
+        println("2 $author")
+        val roles = message.guild!!.getRoles()
+        println("3 $roles")
+        val rolesString = roles.filter { it.permissions.contains(com.jessecorbett.diskord.api.common.Permission.ADMINISTRATOR) }.map { println("${it.name} is admin"); it.id }
+        println("4 $roles")
+        val isAdmin = author.roleIds.any { rolesString.contains(it) }
+        if (!isAdmin) throw SussyException("fuck you")
+    }
 }
