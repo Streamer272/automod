@@ -30,12 +30,10 @@ fun List<Response>.toEmbed(): Embed {
         this.map {
             EmbedField(
                 name = it.trigger,
-                value = """
-                Response: ${when(it.response.length) {
+                value = when(it.response.length) {
                     in 0..256 -> it.response
                     else -> "${it.response.substring(0..254)}..."
-                }}
-                """.trimIndent(),
+                },
                 inline = false
             )
         } as MutableList<EmbedField>,

@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":zap: Adds bot status">
+    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":bug: Fixes case sensitive search">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/response/Entity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/response/Entity.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,7 +162,7 @@
       <workItem from="1651516441104" duration="3436000" />
       <workItem from="1651553942683" duration="1650000" />
       <workItem from="1651595330375" duration="8000" />
-      <workItem from="1651602389855" duration="324000" />
+      <workItem from="1651602389855" duration="642000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: Initial commit">
       <created>1651389145071</created>
@@ -226,7 +227,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651597932164</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary=":bug: Fixes case sensitive search">
+      <created>1651602969439</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1651602969439</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -254,7 +262,8 @@
     <MESSAGE value=":zap: Adds compiler option" />
     <MESSAGE value=":zap: Adds command aliases" />
     <MESSAGE value=":zap: Adds bot status" />
-    <option name="LAST_COMMIT_MESSAGE" value=":zap: Adds bot status" />
+    <MESSAGE value=":bug: Fixes case sensitive search" />
+    <option name="LAST_COMMIT_MESSAGE" value=":bug: Fixes case sensitive search" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
