@@ -1,3 +1,4 @@
+import bot.bindCommands
 import bot.bindEvents
 import com.jessecorbett.diskord.bot.bot
 import response.ResponseTable
@@ -8,13 +9,14 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 suspend fun main() {
     val dotenv = Dotenv.load()
+    val token = dotenv.get("TOKEN") ?: throw Exception("No token found")
 
     Database.connect("jdbc:postgresql://localhost:5432/automod", "org.postgresql.Driver", "user", "password")
     transaction {
         SchemaUtils.create(ResponseTable)
     }
 
-    bot(dotenv.get("TOKEN") ?: throw Exception("No token found")) {
+    bot(token) {
         bindEvents()
         bindCommands()
     }

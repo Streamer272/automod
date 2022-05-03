@@ -4,7 +4,7 @@ import com.jessecorbett.diskord.api.common.UserStatus
 import com.jessecorbett.diskord.bot.BotBase
 import com.jessecorbett.diskord.bot.events
 import com.jessecorbett.diskord.util.sendReply
-import response.respond
+import response.*
 
 fun BotBase.bindEvents() {
     var botId: String? = null
@@ -16,8 +16,11 @@ fun BotBase.bindEvents() {
         }
 
         onMessageCreate { message ->
-            if (message.author.id == botId || message.content.startsWith("!") || message.content.startsWith("\\")) {
+            if (message.author.id == botId || message.content.startsWith("\\")) {
                 return@onMessageCreate
+            }
+            if (message.content.startsWith("!")) {
+                val command = message.content.substring(1)
             }
 
             val response = respond(message)

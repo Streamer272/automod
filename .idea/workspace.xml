@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":bug: Fixes case sensitive search">
+    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":hammer: Moves bot stuff to package">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/bot/Command.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/response/Entity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/response/Entity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/bot/Commands.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/bot/Commands.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/bot/Events.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/bot/Events.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,8 +52,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin Class" />
         <option value="Kotlin File" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -72,8 +75,8 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="feature/case-sensitive" />
-                    <option name="lastUsedInstant" value="1651602624" />
+                    <option name="branchName" value="refactor/commands" />
+                    <option name="lastUsedInstant" value="1651603164" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="main" />
@@ -234,7 +237,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651602969439</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary=":hammer: Moves bot stuff to package">
+      <created>1651603288611</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1651603288611</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -263,7 +273,8 @@
     <MESSAGE value=":zap: Adds command aliases" />
     <MESSAGE value=":zap: Adds bot status" />
     <MESSAGE value=":bug: Fixes case sensitive search" />
-    <option name="LAST_COMMIT_MESSAGE" value=":bug: Fixes case sensitive search" />
+    <MESSAGE value=":hammer: Moves bot stuff to package" />
+    <option name="LAST_COMMIT_MESSAGE" value=":hammer: Moves bot stuff to package" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
