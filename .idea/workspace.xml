@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":zap: Adds command aliases" />
+    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":zap: Adds bot status">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -69,8 +71,8 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="feature/trolling" />
-                    <option name="lastUsedInstant" value="1651597730" />
+                    <option name="branchName" value="feature/case-sensitive" />
+                    <option name="lastUsedInstant" value="1651602624" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="main" />
@@ -159,6 +161,7 @@
       <workItem from="1651516441104" duration="3436000" />
       <workItem from="1651553942683" duration="1650000" />
       <workItem from="1651595330375" duration="8000" />
+      <workItem from="1651602389855" duration="324000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: Initial commit">
       <created>1651389145071</created>
@@ -216,7 +219,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651596017766</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary=":zap: Adds bot status">
+      <created>1651597932164</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1651597932164</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -243,7 +253,8 @@
     <MESSAGE value=":zap: Adds custom exception" />
     <MESSAGE value=":zap: Adds compiler option" />
     <MESSAGE value=":zap: Adds command aliases" />
-    <option name="LAST_COMMIT_MESSAGE" value=":zap: Adds command aliases" />
+    <MESSAGE value=":zap: Adds bot status" />
+    <option name="LAST_COMMIT_MESSAGE" value=":zap: Adds bot status" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

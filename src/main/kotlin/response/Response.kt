@@ -11,7 +11,6 @@ import java.util.*
 
 class NewResponseArgs(parser: ArgParser) {
     val trigger by parser.positional("TRIGGER", help = "Response trigger")
-    val caseSensitive by parser.flagging("-c", "--case-sensitive", help = "Trigger is case sensitive").default(false)
     val response by parser.positional("RESPONSE", help = "Response")
 }
 
@@ -33,7 +32,6 @@ fun new(message: Message): Response {
     val response = transaction {
         Response.new {
             trigger = args.trigger
-            caseSensitive = args.caseSensitive
             response = args.response
             guildId = message.guildId!!
         }
@@ -72,8 +70,8 @@ fun list(message: Message): List<Response> {
 fun respond(message: Message): List<Response> {
     return transaction {
         val conn = TransactionManager.current().connection
-        val statement = conn.prepareStatement("SELECT * FROM response WHERE ? like '%' || trigger || '%' AND guild_id = ?", false)
-        statement.fillParameters(listOf(Pair(VarCharColumnType(), message.content), Pair(VarCharColumnType(), message.guildId)))
+        val statement = conn.prepareStatement("SELECT * FROM response WHERE ? like '%' || LOWER(trigger) || '%' AND guild_id = ?", false)
+        statement.fillParameters(listOf(Pair(VarCharColumnType(), message.content.lowercase()), Pair(VarCharColumnType(), message.guildId)))
         val result = statement.executeQuery()
 
         val responses = mutableListOf<Response>()
