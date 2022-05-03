@@ -10,7 +10,7 @@ fun Embed.Companion.new(title: String?, description: String?, fields: MutableLis
         description = description,
         color = 0xff1493,
         footer = EmbedFooter(
-            text = "This action was performed automatically, dont argue with me you look like idiots",
+            text = "This action was performed automatically by a bot, dont argue with me you fucking moron",
         ),
         fields = fields ?: ArrayList()
     )
