@@ -10,7 +10,7 @@ import org.jetbrains.exposed.dao.id.UUIDTable
 import java.util.UUID
 
 object ResponseTable : UUIDTable("response") {
-    val trigger = varchar("trigger", 64).uniqueIndex()
+    val trigger = varchar("trigger", 64)
     val response = varchar("response", 2048)
     val guildId = varchar("guild_id", 64)
 }
