@@ -1,109 +1,74 @@
 package bot
 
 import com.jessecorbett.diskord.api.channel.Embed
+import com.jessecorbett.diskord.api.channel.EmbedField
 import com.jessecorbett.diskord.api.common.*
-import com.jessecorbett.diskord.bot.BotBase
-import com.jessecorbett.diskord.bot.CommandBuilder
-import com.jessecorbett.diskord.bot.classicCommands
 import com.jessecorbett.diskord.util.authorId
 import com.jessecorbett.diskord.util.sendReply
 import response.*
 import com.jessecorbett.diskord.bot.BotContext
 
+var helpEmbeds: List<EmbedField>? = null
+
 val commands = listOf(
-    Command(listOf("p", "ping"), needsAdmin = false, display = true) { message ->
+    Command(listOf("p", "ping"), "Ping bot", needsAdmin = false, display = true) { message ->
         channel(message.channelId).sendReply(message, embed = NoEmbed)
     },
-    Command(listOf("n", "new"), needsAdmin = true, display = true) { message ->
+    Command(listOf("n", "new"), "Create new response", needsAdmin = true, display = true) { message ->
         new(message)
         channel(message.channelId).sendReply(message, embed = NoEmbed)
     },
-    Command(listOf("l", "list"), needsAdmin = true, display = true) { message ->
+    Command(listOf("l", "list"), "List all responses", needsAdmin = true, display = true) { message ->
         val responses = list(message)
         channel(message.channelId).sendReply(message, embed = responses.toEmbed())
     },
-    Command(listOf("d", "delete"), needsAdmin = true, display = true) { message ->
+    Command(listOf("d", "delete"), "Delete response", needsAdmin = true, display = true) { message ->
         delete(message)
         channel(message.channelId).sendReply(message, embed = NoEmbed)
     },
-    Command(listOf("clean"), needsAdmin = true, display = false) { message ->
+    Command(listOf("clean"), "Clean database", needsAdmin = true, display = false) { message ->
         clean(message)
         channel(message.channelId).sendReply(message, embed = NoEmbed)
+    },
+    Command(listOf("", "h", "help"), "Display help", needsAdmin = true, display = false) { message ->
+        channel(message.channelId).sendReply(
+            message,
+            embed = Embed.customEmbed(
+                "hElP mE",
+                "(you are retarded and cant write single fucking command)",
+                helpEmbeds!!.toMutableList()
+            )
+        )
     }
 )
 
 class SusException(message: String) : Exception(message)
 
-fun CommandBuilder.customCommand(vararg key: String, block: suspend BotContext.(Message) -> Unit) {
-    key.map {
-        command(it) { message ->
-            try {
-                block(message)
-            } catch (e: Exception) {
-                val description = when (e) {
-                    is SusException -> e.message
-                    else -> "you are gay (${e.message})"
-                }
-                if (e !is SusException) e.printStackTrace()
-                channel(message.channelId).sendReply(message, embed = Embed.customEmbed(null, description, null))
-            }
-        }
-    }
-}
+suspend fun executeCommand(message: Message, context: BotContext) {
+    val command = commands.findBy(message.content) ?: return commands.find { it.aliases.contains("help") }!!
+        .block(context, message)
+    if (command.needsAdmin) assertAdmin(message, context)
 
-fun BotBase.bindCommands() {
-    classicCommands("!") {
-//        customCommand("p", "ping") { message ->
-//            channel(message.channelId).sendReply(message, embed = NoEmbed)
-//        }
-//
-//        customCommand("n", "new") { message ->
-//            assertAdmin(message, this)
-//
-//            new(message)
-//            channel(message.channelId).sendReply(message, embed = NoEmbed)
-//        }
-//
-//        customCommand("l", "list") { message ->
-//            assertAdmin(message, this)
-//
-//            val responses = list(message)
-//            channel(message.channelId).sendReply(message, embed = responses.toEmbed())
-//        }
-//
-//        customCommand("d", "delete") { message ->
-//            assertAdmin(message, this)
-//
-//            delete(message)
-//            channel(message.channelId).sendReply(message, embed = NoEmbed)
-//        }
-//
-//        customCommand("clean") { message ->
-//            assertAdmin(message, this)
-//
-//            clean(message)
-//            channel(message.channelId).sendReply(message, embed = NoEmbed)
-//        }
-//
-//        customCommand("") { message ->
-//            assertAdmin(message, this)
-//
-//            val commands: MutableList<EmbedField> = mutableListOf()
-//
-//            commands.add(EmbedField("p | ping", "Ping bot", false))
-//            commands.add(EmbedField("n | new", "Create a new response", false))
-//            commands.add(EmbedField("l | list", "List all responses", false))
-//            commands.add(EmbedField("d | delete", "Delete a response", false))
-//
-//            channel(message.channelId).sendReply(message, embed = Embed.customEmbed("hElP mE", "(you are retarded and cant write single fucking command)", commands))
-//        }
+    with(context) {
+        try {
+            command.block(context, message)
+        } catch (e: Exception) {
+            val description = when (e) {
+                is SusException -> e.message
+                else -> "you are gay (${e.message})"
+            }
+            if (e !is SusException) e.printStackTrace()
+            channel(message.channelId).sendReply(message, embed = Embed.customEmbed(null, description, null))
+        }
     }
 }
 
 suspend fun assertAdmin(message: Message, context: BotContext) {
     with(context) {
         val author = message.guild!!.getMember(message.authorId)
-        val roles = message.guild!!.getRoles().filter { it.permissions.contains(com.jessecorbett.diskord.api.common.Permission.ADMINISTRATOR) }.map { it.id }
+        val roles = message.guild!!.getRoles()
+            .filter { it.permissions.contains(Permission.ADMINISTRATOR) }
+            .map { it.id }
         val isAdmin = author.roleIds.any { roles.contains(it) }
         if (!isAdmin) throw SusException("fuck you")
     }

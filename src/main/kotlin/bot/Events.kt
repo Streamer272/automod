@@ -1,5 +1,6 @@
 package bot
 
+import com.jessecorbett.diskord.api.channel.EmbedField
 import com.jessecorbett.diskord.api.common.UserStatus
 import com.jessecorbett.diskord.bot.BotBase
 import com.jessecorbett.diskord.bot.events
@@ -13,6 +14,12 @@ fun BotBase.bindEvents() {
         onReady {
             botId = it.user.id
             setStatus("Fucking your mom", UserStatus.DO_NOT_DISTURB)
+
+            helpEmbeds = commands.filter { command ->
+                command.display
+            }.map { command ->
+                EmbedField(command.aliases.joinToString(" | "), command.help, false)
+            }
         }
 
         onMessageCreate { message ->
@@ -20,7 +27,7 @@ fun BotBase.bindEvents() {
                 return@onMessageCreate
             }
             if (message.content.startsWith("!")) {
-                val command = message.content.substring(1)
+                executeCommand(message, this)
             }
 
             val response = respond(message)

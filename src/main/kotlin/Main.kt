@@ -1,4 +1,3 @@
-import bot.bindCommands
 import bot.bindEvents
 import com.jessecorbett.diskord.bot.bot
 import response.ResponseTable
@@ -18,6 +17,5 @@ suspend fun main() {
 
     bot(token) {
         bindEvents()
-        bindCommands()
     }
 }
