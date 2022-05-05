@@ -31,8 +31,8 @@ fun List<Response>.toEmbed(): Embed {
             EmbedField(
                 name = it.trigger,
                 value = when(it.response.length) {
-                    in 0..256 -> it.response
-                    else -> "${it.response.substring(0..254)}..."
+                    in 0..64 -> it.response
+                    else -> "${it.response.substring(0..62)}..."
                 },
                 inline = false
             )

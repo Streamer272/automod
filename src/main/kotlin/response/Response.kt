@@ -42,7 +42,7 @@ fun new(message: Message): Response {
 
 fun list(message: Message): List<Response> {
     val args = ArgParser(getArgs(message.content)).parseInto(::ListResponseArgs)
-    val match = when (args.regex) {
+    val query = when (args.regex) {
         true -> args.match
         false -> "%${args.match}%"
     }
@@ -50,19 +50,18 @@ fun list(message: Message): List<Response> {
     return if (!args.regex) {
         transaction {
             var response =
-                Response.find { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like match or (ResponseTable.response like match)) }
-            if (args.limit != 0) {
-                response = response.limit(args.limit as Int, offset = args.offset as Long)
-            }
+                Response.find { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like query or (ResponseTable.response like query)) }
+            if (args.limit != 0) response =
+                response.limit(args.limit.toString().toInt(), offset = args.offset.toString().toLongOrNull() ?: 0)
             response.toList()
         }
     } else {
         transaction {
-            var response = Response.all()
-            if (args.limit != 0) {
-                response = response.limit(args.limit as Int, offset = args.offset as Long)
-            }
-            response.filter { it.trigger.matches(match.toRegex()) or it.response.matches(match.toRegex()) }.toList()
+            var response =
+                Response.find { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger match (query) or (ResponseTable.response match (query))) }
+            if (args.limit != 0) response =
+                response.limit(args.limit.toString().toInt(), offset = args.offset.toString().toLongOrNull() ?: 0)
+            response.toList()
         }
     }
 }
@@ -70,8 +69,16 @@ fun list(message: Message): List<Response> {
 fun respond(message: Message): List<Response> {
     return transaction {
         val conn = TransactionManager.current().connection
-        val statement = conn.prepareStatement("SELECT * FROM response WHERE ? like '%' || LOWER(trigger) || '%' AND guild_id = ?", false)
-        statement.fillParameters(listOf(Pair(VarCharColumnType(), message.content.lowercase()), Pair(VarCharColumnType(), message.guildId)))
+        val statement = conn.prepareStatement(
+            "SELECT * FROM response WHERE ? like '%' || LOWER(trigger) || '%' AND guild_id = ?",
+            false
+        )
+        statement.fillParameters(
+            listOf(
+                Pair(VarCharColumnType(), message.content.lowercase()),
+                Pair(VarCharColumnType(), message.guildId)
+            )
+        )
         val result = statement.executeQuery()
 
         val responses = mutableListOf<Response>()
@@ -86,27 +93,20 @@ fun respond(message: Message): List<Response> {
     }
 }
 
-fun delete(message: Message): Response? {
+fun delete(message: Message) {
     val args = ArgParser(getArgs(message.content)).parseInto(::DeleteResponseArgs)
-    val match = when (args.regex) {
+    val query = when (args.regex) {
         true -> args.match
         false -> "%${args.match}%"
     }
 
-    return if (!args.regex) {
+    if (!args.regex) {
         transaction {
-            val response =
-                Response.find { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like match) }
-                    .firstOrNull()
-            response?.delete()
-            response
+            ResponseTable.deleteWhere { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like query) }
         }
     } else {
         transaction {
-            val response = Response.find { ResponseTable.guildId eq message.guildId!! }
-                .firstOrNull { it.trigger.matches(match.toRegex()) }
-            response?.delete()
-            response
+            ResponseTable.deleteWhere { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger match (query)) }
         }
     }
 }
