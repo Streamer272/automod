@@ -27,7 +27,7 @@ fun BotBase.bindEvents() {
                 return@onMessageCreate
             }
             if (message.content.startsWith("!")) {
-                executeCommand(message, this)
+                return@onMessageCreate executeCommand(message, this)
             }
 
             val response = respond(message)

