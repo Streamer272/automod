@@ -7,13 +7,28 @@ import com.jessecorbett.diskord.util.authorId
 import com.jessecorbett.diskord.util.sendReply
 import response.*
 import com.jessecorbett.diskord.bot.BotContext
+import whitelist.add
+import whitelist.remove
 
 var helpEmbeds: List<EmbedField>? = null
 
 val commands = listOf(
+    // internal
     Command(listOf("p", "ping"), "Ping bot", needsAdmin = false, display = true) { message ->
         channel(message.channelId).sendReply(message, embed = NoEmbed)
     },
+    Command(listOf("", "h", "help"), "Display help", needsAdmin = true, display = false) { message ->
+        channel(message.channelId).sendReply(
+            message,
+            embed = Embed.customEmbed(
+                "hElP mE",
+                "(you are retarded and cant write single fucking command)",
+                helpEmbeds!!.toMutableList()
+            )
+        )
+    },
+
+    // Response
     Command(listOf("n", "new"), "Create new response", needsAdmin = true, display = true) { message ->
         new(message)
         channel(message.channelId).sendReply(message, embed = NoEmbed)
@@ -30,16 +45,16 @@ val commands = listOf(
         clean(message)
         channel(message.channelId).sendReply(message, embed = NoEmbed)
     },
-    Command(listOf("", "h", "help"), "Display help", needsAdmin = true, display = false) { message ->
-        channel(message.channelId).sendReply(
-            message,
-            embed = Embed.customEmbed(
-                "hElP mE",
-                "(you are retarded and cant write single fucking command)",
-                helpEmbeds!!.toMutableList()
-            )
-        )
-    }
+
+    // Whitelist
+    Command(listOf("a", "add"), "Whitelist @somebody", needsAdmin = true, display = true) { message ->
+        add(message)
+        channel(message.channelId).sendReply(message, embed = NoEmbed)
+    },
+    Command(listOf("r", "remove"), "DeWhitelist @somebody", needsAdmin = true, display = true) { message ->
+        remove(message)
+        channel(message.channelId).sendReply(message, embed = NoEmbed)
+    },
 )
 
 class SusException(message: String) : Exception(message)

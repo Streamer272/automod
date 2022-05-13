@@ -29,15 +29,13 @@ class DeleteResponseArgs(parser: ArgParser) {
 fun new(message: Message): Response {
     val args = ArgParser(getArgs(message.content)).parseInto(::NewResponseArgs)
 
-    val response = transaction {
+    return transaction {
         Response.new {
             trigger = args.trigger
             response = args.response
             guildId = message.guildId!!
         }
     }
-
-    return response
 }
 
 fun list(message: Message): List<Response> {
