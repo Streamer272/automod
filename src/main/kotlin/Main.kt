@@ -5,6 +5,7 @@ import io.github.cdimascio.dotenv.Dotenv
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
+import whitelist.WhitelistTable
 
 suspend fun main() {
     val dotenv = Dotenv.load()
@@ -13,6 +14,7 @@ suspend fun main() {
     Database.connect("jdbc:postgresql://localhost:5432/automod", "org.postgresql.Driver", "user", "password")
     transaction {
         SchemaUtils.create(ResponseTable)
+        SchemaUtils.create(WhitelistTable)
     }
 
     bot(token) {
