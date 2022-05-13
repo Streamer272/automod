@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":bug: Fixes limit">
+    <list default="true" id="bf036b59-c660-4e41-bb64-765d3370b518" name="Changes" comment=":zap: Adds allowing creator to use admin commands">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/whitelist/Entity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +51,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin File" />
+        <option value="package-info" />
         <option value="Kotlin Class" />
       </list>
     </option>
@@ -56,7 +59,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="refactor/commands" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -71,8 +74,8 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="refactor/commands" />
-                    <option name="lastUsedInstant" value="1651603164" />
+                    <option name="branchName" value="feature/whitelist" />
+                    <option name="lastUsedInstant" value="1652415955" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="main" />
@@ -165,7 +168,9 @@
       <workItem from="1651602389855" duration="642000" />
       <workItem from="1651638108019" duration="1710000" />
       <workItem from="1651761701175" duration="938000" />
-      <workItem from="1652370862167" duration="31000" />
+      <workItem from="1652370862167" duration="265000" />
+      <workItem from="1652382286689" duration="510000" />
+      <workItem from="1652415731591" duration="664000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: Initial commit">
       <created>1651389145071</created>
@@ -258,7 +263,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651640619782</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary=":zap: Adds allowing creator to use admin commands">
+      <created>1652371124453</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1652371124453</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -290,7 +302,8 @@
     <MESSAGE value=":hammer: Moves bot stuff to package" />
     <MESSAGE value=":construction: Adds command data class" />
     <MESSAGE value=":zap: Removes unique index on trigger" />
-    <option name="LAST_COMMIT_MESSAGE" value=":zap: Removes unique index on trigger" />
+    <MESSAGE value=":zap: Adds allowing creator to use admin commands" />
+    <option name="LAST_COMMIT_MESSAGE" value=":zap: Adds allowing creator to use admin commands" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
