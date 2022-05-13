@@ -15,7 +15,7 @@ var helpEmbeds: List<EmbedField>? = null
 val commands = listOf(
     // internal
     Command(listOf("p", "ping"), "Ping bot", needsAdmin = false, display = true) { message ->
-        channel(message.channelId).sendReply(message, embed = NoEmbed)
+        ez(message)
     },
     Command(listOf("", "h", "help"), "Display help", needsAdmin = true, display = false) { message ->
         channel(message.channelId).sendReply(
@@ -27,11 +27,19 @@ val commands = listOf(
             )
         )
     },
+    Command(listOf("clean@response"), "Clean response data", needsAdmin = true, display = false) { message ->
+        clean(message)
+        ez(message)
+    },
+    Command(listOf("clean@whitelist"), "Clean whitelist", needsAdmin = true, display = false) { message ->
+        whitelist.clean(message)
+        ez(message)
+    },
 
     // Response
     Command(listOf("n", "new"), "Create new response", needsAdmin = true, display = true) { message ->
         new(message)
-        channel(message.channelId).sendReply(message, embed = NoEmbed)
+        ez(message)
     },
     Command(listOf("l", "list"), "List all responses", needsAdmin = true, display = true) { message ->
         val responses = list(message)
@@ -39,21 +47,17 @@ val commands = listOf(
     },
     Command(listOf("d", "delete"), "Delete response", needsAdmin = true, display = true) { message ->
         delete(message)
-        channel(message.channelId).sendReply(message, embed = NoEmbed)
-    },
-    Command(listOf("clean"), "Clean database", needsAdmin = true, display = false) { message ->
-        clean(message)
-        channel(message.channelId).sendReply(message, embed = NoEmbed)
+        ez(message)
     },
 
     // Whitelist
     Command(listOf("a", "add"), "Whitelist @somebody", needsAdmin = true, display = true) { message ->
         add(message)
-        channel(message.channelId).sendReply(message, embed = NoEmbed)
+        ez(message)
     },
     Command(listOf("r", "remove"), "DeWhitelist @somebody", needsAdmin = true, display = true) { message ->
         remove(message)
-        channel(message.channelId).sendReply(message, embed = NoEmbed)
+        ez(message)
     },
 )
 
@@ -90,4 +94,8 @@ suspend fun assertAdmin(message: Message, context: BotContext) {
         val isAdmin = author.roleIds.any { roles.contains(it) }
         if (!isAdmin) throw SusException("fuck you")
     }
+}
+
+suspend fun BotContext.ez(message: Message) {
+    channel(message.channelId).sendReply(message, embed = NoEmbed)
 }

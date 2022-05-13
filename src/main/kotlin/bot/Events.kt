@@ -6,6 +6,7 @@ import com.jessecorbett.diskord.bot.BotBase
 import com.jessecorbett.diskord.bot.events
 import com.jessecorbett.diskord.util.sendReply
 import response.*
+import whitelist.isWhitelisted
 
 fun BotBase.bindEvents() {
     var botId: String? = null
@@ -28,6 +29,9 @@ fun BotBase.bindEvents() {
             }
             if (message.content.startsWith("!")) {
                 return@onMessageCreate executeCommand(message, this)
+            }
+            if (isWhitelisted(message) != null) {
+                return@onMessageCreate
             }
 
             val response = respond(message)

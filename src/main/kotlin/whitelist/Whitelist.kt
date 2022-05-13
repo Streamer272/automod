@@ -34,6 +34,12 @@ fun remove(message: Message) {
     }
 }
 
+fun isWhitelisted(message: Message): Whitelist? {
+    return transaction {
+        Whitelist.find { WhitelistTable.guildId eq message.guildId!! and (WhitelistTable.userId eq message.author.id) }.firstOrNull()
+    }
+}
+
 fun clean(message: Message) {
     transaction {
         ResponseTable.deleteWhere { ResponseTable.guildId eq message.guildId!! }
