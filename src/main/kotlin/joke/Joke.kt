@@ -47,7 +47,6 @@ fun list(message: Message): List<Joke> {
     return transaction {
         var jokes =
             Joke.find { JokeTable.guildId eq message.guildId!! and (JokeTable.name like query or (JokeTable.joke like query)) }
-        println("Jokes are ${jokes.toList()}")
         if (args.limit != 0) jokes =
             jokes.limit(args.limit.toString().toInt(), offset = args.offset.toString().toLongOrNull() ?: 0)
         jokes.toList()
