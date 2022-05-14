@@ -3,7 +3,6 @@ package whitelist
 import bot.getArgs
 import com.jessecorbett.diskord.api.common.Message
 import com.xenomachina.argparser.ArgParser
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.transactions.transaction
