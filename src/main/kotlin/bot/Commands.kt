@@ -66,6 +66,9 @@ val commands = listOf(
         remove(message)
         ez(message)
     },
+
+    // Joke
+    // TODO
 )
 
 class SusException(message: String) : Exception(message)

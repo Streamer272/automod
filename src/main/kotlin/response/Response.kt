@@ -26,10 +26,10 @@ class DeleteResponseArgs(parser: ArgParser) {
     val regex by parser.flagging("-R", "--regex", help = "Match is regex").default(false)
 }
 
-fun new(message: Message): Response {
+fun new(message: Message) {
     val args = ArgParser(getArgs(message.content)).parseInto(::NewResponseArgs)
 
-    return transaction {
+    transaction {
         Response.new {
             trigger = args.trigger
             response = args.response
