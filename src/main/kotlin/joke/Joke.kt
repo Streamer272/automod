@@ -3,6 +3,7 @@ package joke
 import bot.getArgs
 import com.jessecorbett.diskord.api.common.Message
 import com.xenomachina.argparser.ArgParser
+import org.jetbrains.exposed.sql.VarCharColumnType
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.transactions.TransactionManager
@@ -35,8 +36,13 @@ fun respond(message: Message): Joke? {
     return transaction {
         val conn = TransactionManager.current().connection
         val statement = conn.prepareStatement(
-            "SELECT * FROM joke ORDER BY random() LIMIT 1",
+            "SELECT * FROM joke WHERE guild_id = ? ORDER BY random() LIMIT 1",
             false
+        )
+        statement.fillParameters(
+            listOf(
+                Pair(VarCharColumnType(), message.guildId)
+            )
         )
         val result = statement.executeQuery()
 

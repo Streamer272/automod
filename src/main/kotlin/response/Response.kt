@@ -68,7 +68,7 @@ fun respond(message: Message): List<Response> {
     return transaction {
         val conn = TransactionManager.current().connection
         val statement = conn.prepareStatement(
-            "SELECT * FROM response WHERE ? like '%' || LOWER(trigger) || '%' AND guild_id = ?",
+            "SELECT * FROM response WHERE ? LIKE '%' || LOWER(trigger) || '%' AND guild_id = ?",
             false
         )
         statement.fillParameters(
