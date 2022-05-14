@@ -6,6 +6,7 @@ import com.jessecorbett.diskord.api.common.*
 import com.jessecorbett.diskord.util.authorId
 import com.jessecorbett.diskord.util.sendReply
 import com.jessecorbett.diskord.bot.BotContext
+import joke.toEmbed
 import response.toEmbed
 
 var helpEmbeds: List<EmbedField>? = null
@@ -46,7 +47,7 @@ val commands = listOf(
         response.new(message)
         ez(message)
     },
-    Command(listOf("l", "list"), "List all responses", needsAdmin = true, display = true) { message ->
+    Command(listOf("l", "list"), "List responses", needsAdmin = true, display = true) { message ->
         val responses = response.list(message)
         channel(message.channelId).sendReply(message, embed = responses.toEmbed())
     },
@@ -69,6 +70,10 @@ val commands = listOf(
     Command(listOf("nj", "n@j", "new@joke"), "Create new joke", needsAdmin = true, display = true) { message ->
         joke.new(message)
         ez(message)
+    },
+    Command(listOf("lj", "l@j", "list@joke"), "List jokes", needsAdmin = true, display = true) { message ->
+        val jokes = joke.list(message)
+        channel(message.channelId).sendReply(message, embed = jokes.toEmbed())
     },
     Command(listOf("dj", "d@j", "delete@joke"), "Delete joke", needsAdmin = true, display = true) { message ->
         joke.delete(message)

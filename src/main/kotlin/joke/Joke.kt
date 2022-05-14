@@ -3,9 +3,11 @@ package joke
 import bot.getArgs
 import com.jessecorbett.diskord.api.common.Message
 import com.xenomachina.argparser.ArgParser
+import com.xenomachina.argparser.default
 import org.jetbrains.exposed.sql.VarCharColumnType
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import response.ResponseTable
@@ -14,6 +16,12 @@ import java.util.*
 class NewJokeArgs(parser: ArgParser) {
     val name by parser.positional("NAME", help = "Joke name")
     val joke by parser.positional("JOKE", help = "Joke")
+}
+
+class ListJokeArgs(parser: ArgParser) {
+    val match by parser.positional("MATCH", help = "Match response").default("")
+    val limit by parser.storing("-l", "--limit", help = "Limit").default(0)
+    val offset by parser.storing("-o", "--offset", help = "Offset").default(0)
 }
 
 class DeleteJokeArgs(parser: ArgParser) {
@@ -29,6 +37,20 @@ fun new(message: Message) {
             joke = args.joke
             guildId = message.guildId!!
         }
+    }
+}
+
+fun list(message: Message): List<Joke> {
+    val args = ArgParser(getArgs(message.content)).parseInto(::ListJokeArgs)
+    val query = "%${args.match}%"
+
+    return transaction {
+        var jokes =
+            Joke.find { JokeTable.guildId eq message.guildId!! and (JokeTable.name like query or (JokeTable.joke like query)) }
+        println("Jokes are ${jokes.toList()}")
+        if (args.limit != 0) jokes =
+            jokes.limit(args.limit.toString().toInt(), offset = args.offset.toString().toLongOrNull() ?: 0)
+        jokes.toList()
     }
 }
 

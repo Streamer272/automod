@@ -32,7 +32,7 @@ fun List<Response>.toEmbed(): Embed {
                 name = it.trigger,
                 value = when(it.response.length) {
                     in 0..64 -> it.response
-                    else -> "${it.response.substring(0..62)}..."
+                    else -> "${it.response.substring(0..61)}..."
                 },
                 inline = false
             )
