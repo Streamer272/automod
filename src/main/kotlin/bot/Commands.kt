@@ -5,10 +5,8 @@ import com.jessecorbett.diskord.api.channel.EmbedField
 import com.jessecorbett.diskord.api.common.*
 import com.jessecorbett.diskord.util.authorId
 import com.jessecorbett.diskord.util.sendReply
-import response.*
 import com.jessecorbett.diskord.bot.BotContext
-import whitelist.add
-import whitelist.remove
+import response.toEmbed
 
 var helpEmbeds: List<EmbedField>? = null
 
@@ -30,7 +28,7 @@ val commands = listOf(
 
     // Cleaning db
     Command(listOf("clean@response"), "Clean response table", needsAdmin = true, display = false) { message ->
-        clean(message)
+        response.clean(message)
         ez(message)
     },
     Command(listOf("clean@whitelist"), "Clean whitelist table", needsAdmin = true, display = false) { message ->
@@ -38,37 +36,44 @@ val commands = listOf(
         ez(message)
     },
     Command(listOf("clean"), "Clean database", needsAdmin = true, display = false) { message ->
-        clean(message)
+        response.clean(message)
         whitelist.clean(message)
         ez(message)
     },
 
     // Response
     Command(listOf("n", "new"), "Create new response", needsAdmin = true, display = true) { message ->
-        new(message)
+        response.new(message)
         ez(message)
     },
     Command(listOf("l", "list"), "List all responses", needsAdmin = true, display = true) { message ->
-        val responses = list(message)
+        val responses = response.list(message)
         channel(message.channelId).sendReply(message, embed = responses.toEmbed())
     },
     Command(listOf("d", "delete"), "Delete response", needsAdmin = true, display = true) { message ->
-        delete(message)
+        response.delete(message)
         ez(message)
     },
 
     // Whitelist
     Command(listOf("w", "whitelist"), "Whitelist @somebody", needsAdmin = true, display = true) { message ->
-        add(message)
+        whitelist.add(message)
         ez(message)
     },
     Command(listOf("b", "blacklist"), "Remove @somebody from whitelist", needsAdmin = true, display = true) { message ->
-        remove(message)
+        whitelist.remove(message)
         ez(message)
     },
 
     // Joke
-    // TODO
+    Command(listOf("nj", "n@j", "new@joke"), "Create new joke", needsAdmin = true, display = true) { message ->
+        joke.new(message)
+        ez(message)
+    },
+    Command(listOf("dj", "d@j", "delete@joke"), "Delete joke", needsAdmin = true, display = true) { message ->
+        joke.delete(message)
+        ez(message)
+    }
 )
 
 class SusException(message: String) : Exception(message)

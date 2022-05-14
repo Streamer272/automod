@@ -4,9 +4,7 @@ import com.jessecorbett.diskord.api.channel.EmbedField
 import com.jessecorbett.diskord.api.common.UserStatus
 import com.jessecorbett.diskord.bot.BotBase
 import com.jessecorbett.diskord.bot.events
-import com.jessecorbett.diskord.util.sendReply
-import response.*
-import whitelist.isWhitelisted
+import com.jessecorbett.diskord.util.sendMessage
 
 fun BotBase.bindEvents() {
     var botId: String? = null
@@ -30,13 +28,21 @@ fun BotBase.bindEvents() {
             if (message.content.startsWith("!")) {
                 return@onMessageCreate executeCommand(message, this)
             }
-            if (isWhitelisted(message) != null) {
+            if (whitelist.isWhitelisted(message) != null) {
                 return@onMessageCreate
             }
 
-            val response = respond(message)
+            val response = response.respond(message)
             response.map {
-                channel(message.channelId).sendReply(message, it.response)
+                message.reply(it.response)
+            }
+            if (response.isNotEmpty()) {
+                return@onMessageCreate
+            }
+
+            if (joke.random()) {
+                val jokeResponse = joke.respond(message) ?: return@onMessageCreate
+                channel(message.channelId).sendMessage(jokeResponse.joke)
             }
         }
     }
