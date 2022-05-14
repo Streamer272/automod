@@ -27,11 +27,18 @@ val commands = listOf(
             )
         )
     },
-    Command(listOf("clean@response"), "Clean response data", needsAdmin = true, display = false) { message ->
+
+    // Cleaning db
+    Command(listOf("clean@response"), "Clean response table", needsAdmin = true, display = false) { message ->
         clean(message)
         ez(message)
     },
-    Command(listOf("clean@whitelist"), "Clean whitelist", needsAdmin = true, display = false) { message ->
+    Command(listOf("clean@whitelist"), "Clean whitelist table", needsAdmin = true, display = false) { message ->
+        whitelist.clean(message)
+        ez(message)
+    },
+    Command(listOf("clean"), "Clean database", needsAdmin = true, display = false) { message ->
+        clean(message)
         whitelist.clean(message)
         ez(message)
     },
@@ -51,11 +58,11 @@ val commands = listOf(
     },
 
     // Whitelist
-    Command(listOf("a", "add"), "Whitelist @somebody", needsAdmin = true, display = true) { message ->
+    Command(listOf("w", "whitelist"), "Whitelist @somebody", needsAdmin = true, display = true) { message ->
         add(message)
         ez(message)
     },
-    Command(listOf("r", "remove"), "DeWhitelist @somebody", needsAdmin = true, display = true) { message ->
+    Command(listOf("b", "blacklist"), "Remove @somebody from whitelist", needsAdmin = true, display = true) { message ->
         remove(message)
         ez(message)
     },
