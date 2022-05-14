@@ -2,6 +2,7 @@ import bot.bindEvents
 import com.jessecorbett.diskord.bot.bot
 import response.ResponseTable
 import io.github.cdimascio.dotenv.Dotenv
+import joke.JokeTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -15,6 +16,7 @@ suspend fun main() {
     transaction {
         SchemaUtils.create(ResponseTable)
         SchemaUtils.create(WhitelistTable)
+        SchemaUtils.create(JokeTable)
     }
 
     bot(token) {
