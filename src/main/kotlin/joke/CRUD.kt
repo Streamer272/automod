@@ -1,9 +1,9 @@
 package joke
 
-import bot.getArgs
 import com.jessecorbett.diskord.api.common.Message
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.default
+import helpers.getArgs
 import org.jetbrains.exposed.sql.VarCharColumnType
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere

@@ -12,3 +12,10 @@ services:
 
     ports:
       - "5432:5432"
+
+  redis:
+    image: redis:7.0
+    restart: on-failure
+
+    ports:
+      - "6379:6379"

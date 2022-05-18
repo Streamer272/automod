@@ -28,6 +28,7 @@ dependencies {
     implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
     implementation("com.xenomachina:kotlin-argparser:2.0.7")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    implementation("io.github.crackthecodeabhi:kreds:0.7")
 
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")

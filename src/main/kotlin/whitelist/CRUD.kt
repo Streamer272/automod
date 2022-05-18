@@ -1,8 +1,9 @@
 package whitelist
 
-import bot.getArgs
 import com.jessecorbett.diskord.api.common.Message
 import com.xenomachina.argparser.ArgParser
+import helpers.extractPing
+import helpers.getArgs
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -14,7 +15,7 @@ class EditWhitelistArgs(parser: ArgParser) {
 
 fun add(message: Message) {
     val args = ArgParser(getArgs(message.content)).parseInto(::EditWhitelistArgs)
-    val extractedUserId = extractUserId(args.user)
+    val extractedUserId = extractPing(args.user)
 
     transaction {
         Whitelist.new {
@@ -26,7 +27,7 @@ fun add(message: Message) {
 
 fun remove(message: Message) {
     val args = ArgParser(getArgs(message.content)).parseInto(::EditWhitelistArgs)
-    val extractedUserId = extractUserId(args.user)
+    val extractedUserId = extractPing(args.user)
 
     transaction {
         WhitelistTable.deleteWhere { WhitelistTable.guildId eq message.guildId!! and (WhitelistTable.userId eq extractedUserId) }

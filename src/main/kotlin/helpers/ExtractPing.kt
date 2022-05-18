@@ -1,8 +1,8 @@
-package whitelist
+package helpers
 
 import bot.SusException
 
-fun extractUserId(ping: String): String {
+fun extractPing(ping: String): String {
     val regex = Regex("<@\\d{10,64}>")
     if (!regex.containsMatchIn(ping)) throw SusException("you need to @ping somebody idiot")
 

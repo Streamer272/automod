@@ -1,4 +1,4 @@
-package bot
+package helpers
 
 fun getArgs(message: String): Array<String> {
     val args = mutableListOf<String>()
