@@ -1,7 +1,6 @@
 import bot.bindEvents
-import cache.Cache
-import cache.cacheTransaction
 import com.jessecorbett.diskord.bot.bot
+import helpers.Cache
 import response.ResponseTable
 import io.github.cdimascio.dotenv.Dotenv
 import joke.JokeTable
@@ -24,7 +23,7 @@ suspend fun main() {
     val cachePort = dotenv.get("CACHE_PORT") ?: throw Exception("No cache port found")
 
     Database.connect("jdbc:postgresql://$dbHost:$dbPort/$db", "org.postgresql.Driver", dbUser, dbPassword)
-    Cache.connect(cacheHost, cachePort)
+    Cache.connect("$cacheHost:$cachePort")
 
     transaction {
         SchemaUtils.create(ResponseTable)

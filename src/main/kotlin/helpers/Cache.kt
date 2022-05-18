@@ -1,23 +1,19 @@
-package cache
+package helpers
 
-import helpers.logger
 import io.github.crackthecodeabhi.kreds.connection.Endpoint
 import io.github.crackthecodeabhi.kreds.connection.KredsClient
 import io.github.crackthecodeabhi.kreds.connection.newClient
 import kotlinx.coroutines.runBlocking
-import mu.KotlinLogging
 
 class Cache {
     companion object {
-        lateinit var host: String
-        lateinit var port: String
+        private lateinit var url: String
         lateinit var kredsClient: KredsClient
 
-        fun connect(host: String, port: String) {
-            this.host = host
-            this.port = port
+        fun connect(url: String) {
+            this.url = url
 
-            kredsClient = newClient(Endpoint.from("${Companion.host}:${Companion.port}"))
+            kredsClient = newClient(Endpoint.from(url))
         }
     }
 }
