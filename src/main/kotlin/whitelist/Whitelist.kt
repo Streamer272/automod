@@ -33,7 +33,7 @@ fun remove(message: Message) {
     }
 }
 
-fun isWhitelisted(message: Message): Whitelist? {
+fun getWhitelist(message: Message): Whitelist? {
     return transaction {
         Whitelist.find { WhitelistTable.guildId eq message.guildId!! and (WhitelistTable.userId eq message.author.id) }.firstOrNull()
     }

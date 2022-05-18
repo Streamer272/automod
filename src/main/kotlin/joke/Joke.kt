@@ -81,6 +81,6 @@ fun delete(message: Message) {
     }
 }
 
-fun random(): Boolean {
+fun getRandomNumber(): Boolean {
     return (0..12).random() == 12
 }
