@@ -1,9 +1,11 @@
 package cache
 
+import helpers.logger
 import io.github.crackthecodeabhi.kreds.connection.Endpoint
 import io.github.crackthecodeabhi.kreds.connection.KredsClient
 import io.github.crackthecodeabhi.kreds.connection.newClient
 import kotlinx.coroutines.runBlocking
+import mu.KotlinLogging
 
 class Cache {
     companion object {
@@ -23,11 +25,15 @@ class Cache {
 class CacheTransaction(val client: KredsClient);
 
 fun cacheTransaction(block: suspend CacheTransaction.() -> Unit) {
-    runBlocking {
-        Cache.kredsClient.use { client ->
-            with(CacheTransaction(client)) {
-                block()
+    try {
+        runBlocking {
+            Cache.kredsClient.use { client ->
+                with(CacheTransaction(client)) {
+                    block()
+                }
             }
         }
+    } catch (e: Exception) {
+        logger.error { "Cache error: $e" }
     }
 }
