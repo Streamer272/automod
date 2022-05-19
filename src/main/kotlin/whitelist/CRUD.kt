@@ -25,6 +25,12 @@ fun add(message: Message) {
     }
 }
 
+fun show(message: Message): List<Whitelist> {
+    return transaction {
+        Whitelist.find { WhitelistTable.guildId eq message.guildId!! }.toList()
+    }
+}
+
 fun remove(message: Message) {
     val args = ArgParser(getArgs(message.content)).parseInto(::EditWhitelistArgs)
     val extractedUserId = extractPing(args.user)

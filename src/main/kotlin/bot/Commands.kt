@@ -6,8 +6,12 @@ import com.jessecorbett.diskord.api.common.*
 import com.jessecorbett.diskord.util.authorId
 import com.jessecorbett.diskord.util.sendReply
 import com.jessecorbett.diskord.bot.BotContext
+import helpers.NoEmbed
+import helpers.YesEmbed
+import helpers.customEmbed
 import joke.toEmbed
 import response.toEmbed
+import whitelist.toEmbed
 
 var helpEmbeds: List<EmbedField> = listOf()
 
@@ -61,21 +65,41 @@ val commands = listOf(
         whitelist.add(message)
         ez(message)
     },
-    Command(listOf("b", "blacklist"), "Remove @somebody from whitelist", needsAdmin = true, display = true) { message ->
+    Command(listOf("s", "show"), "Show whitelist", needsAdmin = true, display = true) { message ->
+        val records = whitelist.show(message)
+        val globalClient = global()
+        channel(message.channelId).sendReply(
+            message,
+            embed = records.toEmbed(this) {
+                val user = globalClient.getUser(it)
+                "${user.username}#${user.discriminator}"
+            }
+        )
+    },
+    Command(
+        listOf("b", "blacklist"),
+        "Remove @somebody from whitelist",
+        needsAdmin = true,
+        display = true
+    ) { message ->
         whitelist.remove(message)
         ez(message)
     },
+    Command(listOf("w?", "whitelist?"), "Is @somebody whitelisted", needsAdmin = true, display = true) { message ->
+        val whitelistRecord = whitelist.getWhitelist(message)
+        ez(message, if (whitelistRecord != null) YesEmbed else NoEmbed)
+    },
 
     // Joke
-    Command(listOf("nj", "n@j", "new@joke"), "Create new joke", needsAdmin = true, display = true) { message ->
+    Command(listOf("nj", "new@joke"), "Create new joke", needsAdmin = true, display = true) { message ->
         joke.new(message)
         ez(message)
     },
-    Command(listOf("lj", "l@j", "list@joke"), "List jokes", needsAdmin = true, display = true) { message ->
+    Command(listOf("lj", "list@joke"), "List jokes", needsAdmin = true, display = true) { message ->
         val jokes = joke.list(message)
         channel(message.channelId).sendReply(message, embed = jokes.toEmbed())
     },
-    Command(listOf("dj", "d@j", "delete@joke"), "Delete joke", needsAdmin = true, display = true) { message ->
+    Command(listOf("dj", "delete@joke"), "Delete joke", needsAdmin = true, display = true) { message ->
         joke.delete(message)
         ez(message)
     }
@@ -116,6 +140,6 @@ suspend fun assertAdmin(message: Message, context: BotContext) {
     }
 }
 
-suspend fun BotContext.ez(message: Message) {
-    channel(message.channelId).sendReply(message, embed = NoEmbed)
+suspend fun BotContext.ez(message: Message, embed: Embed = NoEmbed) {
+    channel(message.channelId).sendReply(message, embed = embed)
 }

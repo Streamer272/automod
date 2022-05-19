@@ -1,6 +1,6 @@
 package joke
 
-import bot.customEmbed
+import helpers.customEmbed
 import com.jessecorbett.diskord.api.channel.Embed
 import com.jessecorbett.diskord.api.channel.EmbedField
 import org.jetbrains.exposed.dao.UUIDEntity

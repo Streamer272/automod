@@ -44,7 +44,6 @@ suspend fun main() {
         client.flushAll(SyncOption.SYNC)
     }
     response.initCache()
-    println("Cache content: ${cacheTransaction { client.all() }}")
 
     bot(token) {
         bindEvents(jokesEnabled, whitelistEnabled)

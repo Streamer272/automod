@@ -2,7 +2,7 @@ package response
 
 import com.jessecorbett.diskord.api.channel.Embed
 import com.jessecorbett.diskord.api.channel.EmbedField
-import bot.customEmbed
+import helpers.customEmbed
 import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID

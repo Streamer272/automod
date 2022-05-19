@@ -6,11 +6,9 @@ import com.xenomachina.argparser.default
 import helpers.all
 import helpers.cacheTransaction
 import helpers.getArgs
-import io.github.crackthecodeabhi.kreds.args.SyncOption
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.*
 
 class NewResponseArgs(parser: ArgParser) {
     val trigger by parser.positional("TRIGGER", help = "Response trigger")
