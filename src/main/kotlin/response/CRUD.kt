@@ -92,8 +92,7 @@ fun respond(message: Message): List<String> {
         val result = statement.executeQuery()
 
         val responses = mutableListOf<String>()
-        var i = 0
-        while (result.next() && i++ < 10) {
+        while (result.next()) {
             responses += result.getString("response")
         }
 
