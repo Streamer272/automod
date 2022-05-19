@@ -108,7 +108,7 @@ fun delete(message: Message) {
         ResponseTable.deleteWhere { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like query) }
     }
     cacheTransaction {
-        val keys = client.keys("response@${message.guildId}:${args.match}*")
+        val keys = client.keys("response@${message.guildId}:*${args.match}*")
         client.del(keys.joinToString(" "))
     }
 }
@@ -116,5 +116,10 @@ fun delete(message: Message) {
 fun clean(message: Message) {
     transaction {
         ResponseTable.deleteWhere { ResponseTable.guildId eq message.guildId!! }
+    }
+    cacheTransaction {
+        client.keys("response@${message.guildId}:*").forEach {
+            client.del(it)
+        }
     }
 }
