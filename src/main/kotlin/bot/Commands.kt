@@ -9,7 +9,7 @@ import com.jessecorbett.diskord.bot.BotContext
 import joke.toEmbed
 import response.toEmbed
 
-var helpEmbeds: List<EmbedField>? = null
+var helpEmbeds: List<EmbedField> = listOf()
 
 val commands = listOf(
     // internal
@@ -22,7 +22,7 @@ val commands = listOf(
             embed = Embed.customEmbed(
                 "hElP mE",
                 "(you are retarded and cant write single fucking command)",
-                helpEmbeds!!.toMutableList()
+                helpEmbeds.toMutableList()
             )
         )
     },

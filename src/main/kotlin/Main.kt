@@ -1,6 +1,7 @@
 import bot.bindEvents
 import com.jessecorbett.diskord.bot.bot
 import helpers.Cache
+import helpers.all
 import helpers.cacheTransaction
 import response.ResponseTable
 import io.github.cdimascio.dotenv.Dotenv
@@ -24,8 +25,14 @@ suspend fun main() {
     val cacheHost = dotenv.get("CACHE_HOST") ?: throw Exception("No cache host found")
     val cachePort = dotenv.get("CACHE_PORT") ?: throw Exception("No cache port found")
 
+    val enabledValues = dotenv.get("ENABLED") ?: "jokes, whitelist, cache"
+    val enabledList = enabledValues.split(",").map { it.trim().lowercase() }
+    val jokesEnabled = enabledList.contains("jokes")
+    val whitelistEnabled = enabledList.contains("whitelist")
+    val cacheEnabled = enabledList.contains("cache")
+
     Database.connect("jdbc:postgresql://$dbHost:$dbPort/$db", "org.postgresql.Driver", dbUser, dbPassword)
-    Cache.connect("$cacheHost:$cachePort")
+    Cache.connect("$cacheHost:$cachePort", cacheEnabled)
 
     transaction {
         SchemaUtils.create(ResponseTable)
@@ -34,12 +41,12 @@ suspend fun main() {
     }
 
     cacheTransaction {
-        client.flushAll()
+        client.flushAll(SyncOption.SYNC)
     }
     response.initCache()
-    println("Cache content: ${Cache.all()}")
+    println("Cache content: ${cacheTransaction { client.all() }}")
 
     bot(token) {
-        bindEvents()
+        bindEvents(jokesEnabled, whitelistEnabled)
     }
 }

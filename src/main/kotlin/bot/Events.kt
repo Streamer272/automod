@@ -6,7 +6,7 @@ import com.jessecorbett.diskord.bot.BotBase
 import com.jessecorbett.diskord.bot.events
 import com.jessecorbett.diskord.util.sendMessage
 
-fun BotBase.bindEvents() {
+fun BotBase.bindEvents(jokesEnabled: Boolean, whitelistEnabled: Boolean) {
     lateinit var botId: String
 
     events {
@@ -28,19 +28,19 @@ fun BotBase.bindEvents() {
             if (message.content.startsWith("!")) {
                 return@onMessageCreate executeCommand(message, this)
             }
-            if (whitelist.getWhitelist(message) != null) {
+            if (whitelistEnabled && whitelist.getWhitelist(message) != null) {
                 return@onMessageCreate
             }
 
             val response = response.respond(message)
             response.map {
-                message.reply(it.response)
+                message.reply(it)
             }
             if (response.isNotEmpty()) {
                 return@onMessageCreate
             }
 
-            if (joke.getRandomNumber()) {
+            if (jokesEnabled && joke.getRandomNumber()) {
                 val jokeResponse = joke.respond(message) ?: return@onMessageCreate
                 channel(message.channelId).sendMessage(jokeResponse.joke)
             }

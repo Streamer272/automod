@@ -3,12 +3,13 @@ package response
 import com.jessecorbett.diskord.api.common.Message
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.default
+import helpers.all
 import helpers.cacheTransaction
 import helpers.getArgs
+import io.github.crackthecodeabhi.kreds.args.SyncOption
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.*
 
 class NewResponseArgs(parser: ArgParser) {
     val trigger by parser.positional("TRIGGER", help = "Response trigger")
@@ -48,6 +49,9 @@ fun new(message: Message) {
             guildId = message.guildId!!
         }
     }
+    cacheTransaction {
+        client.set("${message.guildId}:${args.trigger}", args.response)
+    }
 }
 
 fun list(message: Message): List<Response> {
@@ -76,7 +80,19 @@ fun list(message: Message): List<Response> {
     }
 }
 
-fun respond(message: Message): List<Response> {
+fun respond(message: Message): List<String> {
+    val cached = cacheTransaction {
+        val results = client.all("${message.guildId!!}:*") ?: return@cacheTransaction null
+        results.filter {
+            val trigger = it.key.split(":").toMutableList()
+            trigger.removeAt(0)
+            message.content.lowercase().contains(trigger.joinToString(":").lowercase())
+        }.map { it.value }
+    }
+    if (cached != null) {
+        return cached
+    }
+
     return transaction {
         val conn = TransactionManager.current().connection
         val statement = conn.prepareStatement(
@@ -91,12 +107,10 @@ fun respond(message: Message): List<Response> {
         )
         val result = statement.executeQuery()
 
-        val responses = mutableListOf<Response>()
+        val responses = mutableListOf<String>()
         var i = 0
         while (result.next() && i++ < 10) {
-            val id = result.getString("id")
-            val uuid = UUID.fromString(id)
-            responses += Response.findById(uuid)!!
+            responses += result.getString("response")
         }
 
         responses
