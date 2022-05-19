@@ -32,11 +32,11 @@ fun BotBase.bindEvents(jokesEnabled: Boolean, whitelistEnabled: Boolean) {
                 return@onMessageCreate
             }
 
-            val response = response.respond(message)
-            response.map {
+            val responses = response.respond(message)
+            responses.map {
                 message.reply(it)
             }
-            if (response.isNotEmpty()) {
+            if (responses.isNotEmpty()) {
                 return@onMessageCreate
             }
 

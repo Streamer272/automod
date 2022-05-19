@@ -74,6 +74,7 @@ fun respond(message: Message): List<String> {
         }.map { it.value }
     }
     if (cached != null) {
+        println("Cached $cached")
         return cached
     }
 
@@ -96,6 +97,7 @@ fun respond(message: Message): List<String> {
             responses += result.getString("response")
         }
 
+        println("DB $responses")
         responses
     }
 }

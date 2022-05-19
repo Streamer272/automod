@@ -24,11 +24,11 @@ suspend fun main() {
     val cacheHost = dotenv.get("CACHE_HOST") ?: throw Exception("No cache host found")
     val cachePort = dotenv.get("CACHE_PORT") ?: throw Exception("No cache port found")
 
-    val enabledValues = dotenv.get("ENABLED") ?: "jokes, whitelist, cache"
-    val enabledList = enabledValues.split(",").map { it.trim().lowercase() }
-    val jokesEnabled = enabledList.contains("jokes")
-    val whitelistEnabled = enabledList.contains("whitelist")
-    val cacheEnabled = enabledList.contains("cache")
+    val featuresString = dotenv.get("FEATURES") ?: "jokes whitelist cache"
+    val features = featuresString.split(" ").map { it.lowercase() }
+    val jokesEnabled = features.contains("jokes")
+    val whitelistEnabled = features.contains("whitelist")
+    val cacheEnabled = features.contains("cache")
 
     Database.connect("jdbc:postgresql://$dbHost:$dbPort/$db", "org.postgresql.Driver", dbUser, dbPassword)
     Cache.connect("$cacheHost:$cachePort", cacheEnabled)
