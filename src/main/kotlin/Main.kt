@@ -2,6 +2,7 @@ import bot.bindEvents
 import com.jessecorbett.diskord.bot.bot
 import helpers.Cache
 import helpers.cacheTransaction
+import helpers.logger
 import response.ResponseTable
 import io.github.cdimascio.dotenv.Dotenv
 import io.github.crackthecodeabhi.kreds.args.SyncOption
@@ -30,6 +31,14 @@ suspend fun main() {
     val whitelistEnabled = features.contains("whitelist")
     val jokesEnabled = features.contains("jokes")
     val cacheEnabled = features.contains("cache")
+
+    val featuresList = listOfNotNull(
+        if (responseEnabled) "response" else null,
+        if (whitelistEnabled) "whitelist" else null,
+        if (jokesEnabled) "jokes" else null,
+        if (cacheEnabled) "cache" else null
+    )
+    logger.info { "Using features: ${featuresList.joinToString(" ")}" }
 
     Database.connect("jdbc:postgresql://$dbHost:$dbPort/$db", "org.postgresql.Driver", dbUser, dbPassword)
     Cache.connect("$cacheHost:$cachePort", cacheEnabled)
