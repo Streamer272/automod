@@ -24,10 +24,11 @@ suspend fun main() {
     val cacheHost = dotenv.get("CACHE_HOST") ?: throw Exception("No cache host found")
     val cachePort = dotenv.get("CACHE_PORT") ?: throw Exception("No cache port found")
 
-    val featuresString = dotenv.get("FEATURES") ?: "jokes whitelist cache"
+    val featuresString = dotenv.get("FEATURES") ?: "response whitelist jokes cache"
     val features = featuresString.split(" ").map { it.lowercase() }
-    val jokesEnabled = features.contains("jokes")
+    val responseEnabled = features.contains("response")
     val whitelistEnabled = features.contains("whitelist")
+    val jokesEnabled = features.contains("jokes")
     val cacheEnabled = features.contains("cache")
 
     Database.connect("jdbc:postgresql://$dbHost:$dbPort/$db", "org.postgresql.Driver", dbUser, dbPassword)
@@ -45,6 +46,6 @@ suspend fun main() {
     response.initCache()
 
     bot(token) {
-        bindEvents(jokesEnabled, whitelistEnabled)
+        bindEvents(responseEnabled, whitelistEnabled, jokesEnabled)
     }
 }
