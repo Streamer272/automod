@@ -21,7 +21,7 @@ class Cache {
     }
 }
 
-class CacheTransaction(val client: KredsClient);
+class CacheTransaction(val client: KredsClient)
 
 fun KredsClient.all(query: String = "*"): Map<String, String>? {
     return cacheTransaction {
@@ -35,7 +35,7 @@ fun KredsClient.all(query: String = "*"): Map<String, String>? {
 
 fun <T> cacheTransaction(block: suspend CacheTransaction.() -> T): T? {
     if (!Cache.cacheEnabled) {
-        return null;
+        return null
     }
 
     return runBlocking {

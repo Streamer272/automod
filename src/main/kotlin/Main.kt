@@ -1,7 +1,6 @@
 import bot.bindEvents
 import com.jessecorbett.diskord.bot.bot
 import helpers.Cache
-import helpers.all
 import helpers.cacheTransaction
 import response.ResponseTable
 import io.github.cdimascio.dotenv.Dotenv

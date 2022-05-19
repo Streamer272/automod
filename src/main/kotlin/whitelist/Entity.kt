@@ -1,7 +1,6 @@
 package whitelist
 
 import com.jessecorbett.diskord.api.channel.Embed
-import com.jessecorbett.diskord.api.channel.EmbedField
 import com.jessecorbett.diskord.bot.BotContext
 import com.jessecorbett.diskord.util.withBold
 import helpers.customEmbed
