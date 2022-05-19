@@ -1,8 +1,10 @@
 import bot.bindEvents
 import com.jessecorbett.diskord.bot.bot
 import helpers.Cache
+import helpers.cacheTransaction
 import response.ResponseTable
 import io.github.cdimascio.dotenv.Dotenv
+import io.github.crackthecodeabhi.kreds.args.SyncOption
 import joke.JokeTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -30,6 +32,12 @@ suspend fun main() {
         SchemaUtils.create(WhitelistTable)
         SchemaUtils.create(JokeTable)
     }
+
+    cacheTransaction {
+        client.flushAll()
+    }
+    response.initCache()
+    println("Cache content: ${Cache.all()}")
 
     bot(token) {
         bindEvents()

@@ -15,21 +15,27 @@ class Cache {
 
             kredsClient = newClient(Endpoint.from(url))
         }
+
+        fun all(query: String = "*"): Map<String, Any> {
+            return cacheTransaction {
+                val result = HashMap<String, Any>()
+                for (key in client.keys(query)) {
+                    result[key] = client.get(key) ?: "what the fuck (this is internal server error, should never ever happen)"
+                }
+                return@cacheTransaction result
+            }
+        }
     }
 }
 
 class CacheTransaction(val client: KredsClient);
 
-fun cacheTransaction(block: suspend CacheTransaction.() -> Unit) {
-    try {
-        runBlocking {
-            Cache.kredsClient.use { client ->
-                with(CacheTransaction(client)) {
-                    block()
-                }
+fun <T> cacheTransaction(block: suspend CacheTransaction.() -> T): T {
+    return runBlocking {
+        Cache.kredsClient.use { client ->
+            with(CacheTransaction(client)) {
+                return@runBlocking block()
             }
         }
-    } catch (e: Exception) {
-        logger.error { "Cache error: $e" }
     }
 }

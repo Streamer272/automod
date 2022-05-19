@@ -3,6 +3,7 @@ package response
 import com.jessecorbett.diskord.api.common.Message
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.default
+import helpers.cacheTransaction
 import helpers.getArgs
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.TransactionManager
@@ -24,6 +25,17 @@ class ListResponseArgs(parser: ArgParser) {
 class DeleteResponseArgs(parser: ArgParser) {
     val match by parser.positional("MATCH", help = "Match response")
     val regex by parser.flagging("-R", "--regex", help = "Match is regex").default(false)
+}
+
+fun initCache() {
+    val responses = transaction {
+        Response.all().toList()
+    }
+    cacheTransaction {
+        for (response in responses) {
+            client.set("${response.guildId}:${response.trigger}", response.response)
+        }
+    }
 }
 
 fun new(message: Message) {
