@@ -10,6 +10,7 @@ import io.github.crackthecodeabhi.kreds.args.SyncOption
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.util.*
 
 class NewResponseArgs(parser: ArgParser) {
     val trigger by parser.positional("TRIGGER", help = "Response trigger")
@@ -18,14 +19,12 @@ class NewResponseArgs(parser: ArgParser) {
 
 class ListResponseArgs(parser: ArgParser) {
     val match by parser.positional("MATCH", help = "Match response").default("")
-    val regex by parser.flagging("-R", "--regex", help = "Match is regex").default(false)
     val limit by parser.storing("-l", "--limit", help = "Limit").default(0)
     val offset by parser.storing("-o", "--offset", help = "Offset").default(0)
 }
 
 class DeleteResponseArgs(parser: ArgParser) {
     val match by parser.positional("MATCH", help = "Match response")
-    val regex by parser.flagging("-R", "--regex", help = "Match is regex").default(false)
 }
 
 fun initCache() {
@@ -34,7 +33,7 @@ fun initCache() {
     }
     cacheTransaction {
         for (response in responses) {
-            client.set("${response.guildId}:${response.trigger}", response.response)
+            client.set("response@${response.guildId}:${response.trigger}", response.response)
         }
     }
 }
@@ -50,39 +49,26 @@ fun new(message: Message) {
         }
     }
     cacheTransaction {
-        client.set("${message.guildId}:${args.trigger}", args.response)
+        client.set("response@${message.guildId}:${args.trigger}", args.response)
     }
 }
 
 fun list(message: Message): List<Response> {
     val args = ArgParser(getArgs(message.content)).parseInto(::ListResponseArgs)
-    val query = when (args.regex) {
-        true -> args.match
-        false -> "%${args.match}%"
-    }
+    val query = "%${args.match}%"
 
-    return if (!args.regex) {
-        transaction {
-            var response =
-                Response.find { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like query or (ResponseTable.response like query)) }
-            if (args.limit != 0) response =
-                response.limit(args.limit.toString().toInt(), offset = args.offset.toString().toLongOrNull() ?: 0)
-            response.toList()
-        }
-    } else {
-        transaction {
-            var response =
-                Response.find { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger match (query) or (ResponseTable.response match (query))) }
-            if (args.limit != 0) response =
-                response.limit(args.limit.toString().toInt(), offset = args.offset.toString().toLongOrNull() ?: 0)
-            response.toList()
-        }
+    return transaction {
+        var response =
+            Response.find { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like query or (ResponseTable.response like query)) }
+        if (args.limit != 0) response =
+            response.limit(args.limit.toString().toInt(), offset = args.offset.toString().toLongOrNull() ?: 0)
+        response.toList()
     }
 }
 
 fun respond(message: Message): List<String> {
     val cached = cacheTransaction {
-        val results = client.all("${message.guildId!!}:*") ?: return@cacheTransaction null
+        val results = client.all("response@${message.guildId!!}:*") ?: return@cacheTransaction null
         results.filter {
             val trigger = it.key.split(":").toMutableList()
             trigger.removeAt(0)
@@ -119,19 +105,14 @@ fun respond(message: Message): List<String> {
 
 fun delete(message: Message) {
     val args = ArgParser(getArgs(message.content)).parseInto(::DeleteResponseArgs)
-    val query = when (args.regex) {
-        true -> args.match
-        false -> "%${args.match}%"
-    }
+    val query = "%${args.match}%"
 
-    if (!args.regex) {
-        transaction {
-            ResponseTable.deleteWhere { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like query) }
-        }
-    } else {
-        transaction {
-            ResponseTable.deleteWhere { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger match (query)) }
-        }
+    transaction {
+        ResponseTable.deleteWhere { ResponseTable.guildId eq message.guildId!! and (ResponseTable.trigger like query) }
+    }
+    cacheTransaction {
+        val keys = client.keys("response@${message.guildId}:${args.match}*")
+        client.del(keys.joinToString(" "))
     }
 }
 
