@@ -1,5 +1,6 @@
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.firestore.FirestoreOptions
+import com.google.cloud.firestore.QueryDocumentSnapshot
 import com.jessecorbett.diskord.api.common.UserStatus
 import com.jessecorbett.diskord.bot.bot
 import com.jessecorbett.diskord.bot.events
@@ -21,9 +22,26 @@ suspend fun main() {
     val db = firestoreOptions.service
     logger.debug { "Loading Firestore collection" }
     val triggers = db.collection("triggers")
+    lateinit var documents: List<QueryDocumentSnapshot>
+
+    triggers.addSnapshotListener { snapshot, exception ->
+        if (exception != null) {
+            logger.error { "Listening on snapshot failed ($exception)" }
+            return@addSnapshotListener
+        }
+
+        if (snapshot == null) {
+            logger.error { "Snapshot empty" }
+            return@addSnapshotListener
+        }
+
+        println("got snapshot")
+        documents = snapshot.documents
+    }
 
     bot(token) {
         lateinit var botId: String
+
         events {
             onReady {
                 botId = it.user.id
@@ -36,7 +54,6 @@ suspend fun main() {
                     return@onMessageCreate
                 }
 
-                val documents = triggers.get().get().documents
                 for (document in documents) {
                     val on = document.getString("on") ?: continue
                     val re = Regex(on)
