@@ -21,10 +21,11 @@ suspend fun main() {
     logger.debug { "Getting Firestore instance" }
     val db = firestoreOptions.service
     logger.debug { "Loading Firestore collection" }
-    val triggers = db.collection("triggers")
+
+    val fluids = db.collection("fluids")
     lateinit var documents: List<QueryDocumentSnapshot>
 
-    triggers.addSnapshotListener { snapshot, exception ->
+    fluids.addSnapshotListener { snapshot, exception ->
         if (exception != null) {
             logger.error { "Listening on snapshot failed ($exception)" }
             return@addSnapshotListener
@@ -35,7 +36,7 @@ suspend fun main() {
             return@addSnapshotListener
         }
 
-        println("got snapshot")
+        logger.debug { "Snapshot received" }
         documents = snapshot.documents
     }
 
@@ -55,11 +56,16 @@ suspend fun main() {
                 }
 
                 for (document in documents) {
-                    val on = document.getString("on") ?: continue
-                    val re = Regex(on)
+                    val serverId = document.getString("serverId") ?: continue
+                    if (serverId != message.guildId) {
+                        continue
+                    }
+
+                    val cause = document.getString("cause") ?: continue
+                    val echo = document.getString("echo") ?: continue
+                    val re = Regex(cause)
                     val match = re.find(message.content) ?: continue
-                    val response = document.getString("response") ?: continue
-                    message.reply(response.replace("\$val", match.value))
+                    message.reply(echo.replace("\$val", match.value))
                 }
             }
         }
