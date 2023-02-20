@@ -1,6 +1,11 @@
 # automod
 
-Run with
-```shell
-./gradlew run
+## Build with
+```
+docker build . --tag automod:latest
+```
+
+## Run with
+```
+docker run --rm --name automod automod:latest
 ```
