@@ -17,8 +17,9 @@ repositories {
 dependencies {
     implementation("com.jessecorbett:diskord-bot:3.0.0")
     implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
-    implementation("io.github.microutils:kotlin-logging:2.1.21")
-    implementation("com.google.cloud:google-cloud-firestore:3.8.0")
+    implementation("org.slf4j:slf4j-simple:2.0.3")
+    implementation("io.github.microutils:kotlin-logging:3.0.5")
+    implementation("com.google.firebase:firebase-admin:9.1.1")
     testImplementation(kotlin("test"))
 }
 

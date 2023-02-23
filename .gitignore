@@ -18,4 +18,4 @@ out/
 
 ### ENV ###
 .env
-gcloud.json
+automod.json

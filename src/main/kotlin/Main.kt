@@ -1,12 +1,15 @@
 import com.google.auth.oauth2.GoogleCredentials
-import com.google.cloud.firestore.FirestoreOptions
 import com.google.cloud.firestore.Query
 import com.google.cloud.firestore.QueryDocumentSnapshot
+import com.google.firebase.FirebaseApp
+import com.google.firebase.FirebaseOptions
+import com.google.firebase.cloud.FirestoreClient
 import com.jessecorbett.diskord.api.common.UserStatus
 import com.jessecorbett.diskord.bot.bot
 import com.jessecorbett.diskord.bot.events
 import io.github.cdimascio.dotenv.Dotenv
 import mu.KotlinLogging
+import java.io.File
 
 suspend fun main() {
     val dotenv = Dotenv.load()
@@ -15,12 +18,13 @@ suspend fun main() {
     val token = dotenv.get("TOKEN") ?: throw Exception("No token found")
 
     logger.debug { "Getting Firebase app" }
-    val firestoreOptions = FirestoreOptions.getDefaultInstance().toBuilder()
-        .setProjectId("automod-378203")
-        .setCredentials(GoogleCredentials.getApplicationDefault())
+    val serviceAccount = File("automod.json").inputStream()
+    val options: FirebaseOptions = FirebaseOptions.builder()
+        .setCredentials(GoogleCredentials.fromStream(serviceAccount))
         .build()
+    FirebaseApp.initializeApp(options)
     logger.debug { "Getting Firestore instance" }
-    val db = firestoreOptions.service
+    val db = FirestoreClient.getFirestore()
     logger.debug { "Loading Firestore collection" }
 
     val fluids = db.collection("fluids")
@@ -48,7 +52,7 @@ suspend fun main() {
             onReady {
                 botId = it.user.id
                 setStatus("Fucking your mom", UserStatus.DO_NOT_DISTURB)
-                logger.info { "Starting app" }
+                logger.info { "Starting app as ${it.user.username}:${it.user.discriminator}" }
             }
 
             onMessageCreate { message ->
