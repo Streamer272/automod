@@ -1,1 +1,1 @@
-release: ./gradlew run
+worker: ./gradlew run
