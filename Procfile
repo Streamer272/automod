@@ -1,0 +1,1 @@
+release: ./gradlew run
