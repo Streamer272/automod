@@ -1,5 +1,6 @@
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.firestore.FirestoreOptions
+import com.google.cloud.firestore.Query
 import com.google.cloud.firestore.QueryDocumentSnapshot
 import com.jessecorbett.diskord.api.common.UserStatus
 import com.jessecorbett.diskord.bot.bot
@@ -25,7 +26,7 @@ suspend fun main() {
     val fluids = db.collection("fluids")
     lateinit var documents: List<QueryDocumentSnapshot>
 
-    fluids.addSnapshotListener { snapshot, exception ->
+    fluids.orderBy("zIndex", Query.Direction.DESCENDING).addSnapshotListener { snapshot, exception ->
         if (exception != null) {
             logger.error { "Listening on snapshot failed ($exception)" }
             return@addSnapshotListener
@@ -66,6 +67,7 @@ suspend fun main() {
                     val re = Regex(cause)
                     val match = re.find(message.content) ?: continue
                     message.reply(echo.replace("\$val", match.value))
+                    break
                 }
             }
         }

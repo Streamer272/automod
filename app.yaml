@@ -1,2 +1,2 @@
-runtime: java17
-entrypoint:
+runtime: custom
+env: flex
