@@ -11,7 +11,7 @@ import io.github.cdimascio.dotenv.Dotenv
 import mu.KotlinLogging
 
 suspend fun main() {
-    val dotenv = Dotenv.load()
+    val dotenv = Dotenv.configure().ignoreIfMissing().load()
     val logger = KotlinLogging.logger("main")
 
     val token = dotenv.get("TOKEN") ?: throw Exception("Token not found")
