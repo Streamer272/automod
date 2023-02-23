@@ -13,7 +13,7 @@ import java.io.File
 
 suspend fun main() {
     val dotenv = Dotenv.load()
-    val logger = KotlinLogging.logger { }
+    val logger = KotlinLogging.logger("main")
 
     val token = dotenv.get("TOKEN") ?: throw Exception("No token found")
 
@@ -52,7 +52,7 @@ suspend fun main() {
             onReady {
                 botId = it.user.id
                 setStatus("Fucking your mom", UserStatus.DO_NOT_DISTURB)
-                logger.info { "Starting app as ${it.user.username}:${it.user.discriminator}" }
+                logger.info { "Starting app as ${it.user.username}#${it.user.discriminator}" }
             }
 
             onMessageCreate { message ->
