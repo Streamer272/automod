@@ -9,18 +9,17 @@ import com.jessecorbett.diskord.bot.bot
 import com.jessecorbett.diskord.bot.events
 import io.github.cdimascio.dotenv.Dotenv
 import mu.KotlinLogging
-import java.io.File
 
 suspend fun main() {
     val dotenv = Dotenv.load()
     val logger = KotlinLogging.logger("main")
 
-    val token = dotenv.get("TOKEN") ?: throw Exception("No token found")
+    val token = dotenv.get("TOKEN") ?: throw Exception("Token not found")
+    val serviceAccount = dotenv.get("SERVICE_ACCOUNT") ?: throw Exception("Service account not found")
 
     logger.debug { "Getting Firebase app" }
-    val serviceAccount = File("automod.json").inputStream()
     val options: FirebaseOptions = FirebaseOptions.builder()
-        .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+        .setCredentials(GoogleCredentials.fromStream(serviceAccount.byteInputStream()))
         .build()
     FirebaseApp.initializeApp(options)
     logger.debug { "Getting Firestore instance" }

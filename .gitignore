@@ -17,5 +17,5 @@ out/
 .vscode/
 
 ### ENV ###
-.env
-automod.json
+src/main/resources/.env
+src/main/resources/automod.json
