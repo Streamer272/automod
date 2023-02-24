@@ -29,7 +29,7 @@ suspend fun main() {
     val fluids = db.collection("fluids")
     lateinit var documents: List<QueryDocumentSnapshot>
 
-    fluids.orderBy("zIndex", Query.Direction.DESCENDING).addSnapshotListener { snapshot, exception ->
+    fluids.orderBy("rank", Query.Direction.DESCENDING).addSnapshotListener { snapshot, exception ->
         if (exception != null) {
             logger.error { "Listening on snapshot failed ($exception)" }
             return@addSnapshotListener
