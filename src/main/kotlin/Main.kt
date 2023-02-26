@@ -69,7 +69,10 @@ suspend fun main() {
                     val echo = document.getString("echo") ?: continue
                     val re = Regex(cause)
                     val match = re.find(message.content) ?: continue
-                    message.reply(echo.replace("\$val", match.value))
+                    message.reply(
+                        echo.replace("@value", match.value)
+                            .replace("@author", "${message.author.username}#${message.author.discriminator}")
+                    )
                     break
                 }
             }
