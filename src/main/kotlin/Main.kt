@@ -71,7 +71,7 @@ suspend fun main() {
                     val match = re.find(message.content) ?: continue
                     message.reply(
                         echo.replace("@value", match.value)
-                            .replace("@author", "${message.author.username}#${message.author.discriminator}")
+                            .replace("@author", "<@${message.author.id}>")
                     )
                     break
                 }
