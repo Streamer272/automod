@@ -10,6 +10,9 @@ import com.jessecorbett.diskord.bot.events
 import io.github.cdimascio.dotenv.Dotenv
 import mu.KotlinLogging
 
+val REGEX_CASE_INSENSITIVE = setOf(RegexOption.MULTILINE, RegexOption.IGNORE_CASE)
+val REGEX_CASE_SENSITIVE = setOf(RegexOption.MULTILINE)
+
 suspend fun main() {
     val dotenv = Dotenv.configure().ignoreIfMissing().load()
     val logger = KotlinLogging.logger("main")
@@ -67,7 +70,8 @@ suspend fun main() {
 
                     val cause = document.getString("cause") ?: continue
                     val echo = document.getString("echo") ?: continue
-                    val re = Regex(cause)
+                    val caseSensitive = document.getBoolean("caseSensitive") ?: true
+                    val re = Regex(cause, if (caseSensitive) REGEX_CASE_SENSITIVE else REGEX_CASE_INSENSITIVE)
                     val match = re.find(message.content) ?: continue
                     message.reply(
                         echo.replace("@value", match.value)
