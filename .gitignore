@@ -18,3 +18,5 @@ out/
 
 ### ENV ###
 src/main/resources/.env
+.env
+automod.json
