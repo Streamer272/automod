@@ -1,6 +1,5 @@
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.firestore.Query
-import com.google.cloud.firestore.QueryDocumentSnapshot
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.cloud.FirestoreClient
@@ -26,7 +25,7 @@ suspend fun main() {
     val serviceAccountPath = dotenv.get("SERVICE_ACCOUNT") ?: throw Exception("Service account not found")
     val serviceAccount = File(serviceAccountPath).inputStream()
     val pingInterval = dotenv.get("PING_INTERVAL").toIntOrNull() ?: 10
-    val iterationLength = dotenv.get("ITERATION_LENGTH").toIntOrNull() ?: 60
+    val iterationCount = dotenv.get("ITERATION_COUNT").toIntOrNull() ?: 60
 
     logger.debug { "Getting Firebase app" }
     val options: FirebaseOptions = FirebaseOptions.builder()
@@ -87,23 +86,59 @@ suspend fun main() {
             bussies.clear()
 
             for (document in snapshot.documents) {
+                val message = document.getString("message") ?: continue
                 val channelId = document.getString("channelId") ?: continue
                 val serverId = document.getString("serverId") ?: continue
 
-                bussies += Bussy(channelId, serverId)
+                bussies += Bussy(message, channelId, serverId)
             }
         }
 
-
     bot(token) {
-lateinit var botId: String
-        var bussyIteration = 0
+        lateinit var botId: String
+        var bussyIteration = -1
 
         events {
-onReady {
+            onReady {
                 botId = it.user.id
                 setStatus("Fucking your mom", UserStatus.DO_NOT_DISTURB)
                 logger.info { "Starting app as ${it.user.username}#${it.user.discriminator}" }
+
+                CoroutineScope(Dispatchers.Default).launch {
+                    val picked: MutableList<GuildMember> = mutableListOf()
+
+                    while (isActive) {
+                        if (bussies.size == 0) {
+                            delay(pingInterval.seconds)
+                            continue
+                        }
+
+                        if (bussyIteration == iterationCount || bussyIteration == 0) {
+                            logger.debug { "Refreshing users" }
+                            picked.clear()
+
+                            bussies.forEach { bussy ->
+                                val members = guild(bussy.serverId).getMembers(100)
+                                picked += members[members.indices.random()]
+                            }
+
+                            bussyIteration = 0
+                        }
+
+                        bussies.forEachIndexed { index, bussy ->
+                            val target = picked.getOrNull(index)
+                            target
+                                ?.user
+                                ?.id
+                                ?.let { id ->
+                                    channel(bussy.channelId).sendMessage(bussy.message.replace("@author", "<@$id>"))
+                                }
+                        }
+
+                        delay(pingInterval.seconds)
+                        bussyIteration++
+                    }
+                }
             }
 
             onMessageCreate { message ->
@@ -125,41 +160,6 @@ onReady {
                             .replace("@author", "<@${message.author.id}>")
                     )
                     break
-                }
-            }
-
-            CoroutineScope(Dispatchers.Default).launch {
-                val picked: MutableList<GuildMember> = mutableListOf()
-                while (isActive) {
-                    logger.debug { "Bussies size ${bussies.size}" }
-                    if (bussies.size == 0) {
-                        delay(pingInterval.seconds)
-                        continue
-                    }
-
-                    logger.debug { "Refreshing users ${bussyIteration == iterationLength}" }
-                    if (bussyIteration == iterationLength || bussyIteration == 0) {
-                        for (bussy in bussies) {
-                            logger.debug { "Fetching the members of ${bussy.serverId}" }
-                            val guild = guild(bussy.serverId)
-                            channel(bussy.channelId).getThreadMembers()
-                            val members = guild(bussy.serverId).getMembers(100)
-                            picked += members[(0..99).random()]
-                        }
-                        bussyIteration = 1
-                    }
-
-                    logger.debug { "Pinging" }
-                    bussies.forEachIndexed { index, bussy ->
-                        logger.info { "ayo ${bussy.channelId} - ${bussy.serverId}" }
-                        val target = picked.getOrNull(index)
-                        target?.user?.id?.let {
-                            channel(bussy.channelId).sendMessage("<@${it}> yo what the fuck")
-                        }
-                    }
-
-                    delay(pingInterval.seconds)
-                    bussyIteration++
                 }
             }
         }
