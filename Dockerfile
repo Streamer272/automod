@@ -1,7 +1,9 @@
 FROM gradle:jdk17 AS build
-COPY --chown=gradle:gradle . /app
+
 WORKDIR /app
+COPY --chown=gradle:gradle . .
+
 RUN gradle build
-ENV GOOGLE_APPLICATION_CREDENTIALS=/app/gcloud.json
-EXPOSE 8080
+ENV GOOGLE_APPLICATION_CREDENTIALS=/app/automod.json
+
 CMD ["gradle", "run"]
