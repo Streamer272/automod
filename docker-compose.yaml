@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  bot:
+    build: .
+    restart: unless-stopped
+
+    environment:
+      DISCORD_TOKEN: /app/creds/discord
+      SERVICE_ACCOUNT: /app/creds/gcloud.json
+      PING_INTERVAL: 10
+      ITERATION_COUNT: 10
+    volumes:
+      - ./creds:/app/creds

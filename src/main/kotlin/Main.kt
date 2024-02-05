@@ -21,11 +21,13 @@ suspend fun main() {
     val dotenv = Dotenv.configure().ignoreIfMissing().load()
     val logger = KotlinLogging.logger("main")
 
-    val token = dotenv.get("TOKEN") ?: throw Exception("Token not found")
-    val serviceAccountPath = dotenv.get("SERVICE_ACCOUNT") ?: throw Exception("Service account not found")
+    val tokenPath = dotenv["DISCORD_TOKEN"] ?: throw Exception("Token not found")
+    val token = File(tokenPath).readText()
+    val serviceAccountPath = dotenv["SERVICE_ACCOUNT"] ?: throw Exception("Service account not found")
     val serviceAccount = File(serviceAccountPath).inputStream()
-    val pingInterval = dotenv.get("PING_INTERVAL").toIntOrNull() ?: 10
-    val iterationCount = dotenv.get("ITERATION_COUNT").toIntOrNull() ?: 60
+    val pingInterval = dotenv.get("PING_INTERVAL", "10").toInt()
+    val iterationCount = dotenv.get("ITERATION_COUNT", "60").toInt()
+    val enableBussy = dotenv.get("ENABLE_BUSSY", "false") == "true"
 
     logger.debug { "Getting Firebase app" }
     val options: FirebaseOptions = FirebaseOptions.builder()
@@ -104,39 +106,41 @@ suspend fun main() {
                 setStatus("Fucking your mom", UserStatus.DO_NOT_DISTURB)
                 logger.info { "Starting app as ${it.user.username}#${it.user.discriminator}" }
 
-                CoroutineScope(Dispatchers.Default).launch {
-                    val picked: MutableList<GuildMember> = mutableListOf()
+                if (enableBussy) {
+                    CoroutineScope(Dispatchers.Default).launch {
+                        val picked: MutableList<GuildMember> = mutableListOf()
 
-                    while (isActive) {
-                        if (bussies.size == 0) {
-                            delay(pingInterval.seconds)
-                            continue
-                        }
-
-                        if (bussyIteration == iterationCount || bussyIteration == 0) {
-                            logger.debug { "Refreshing users" }
-                            picked.clear()
-
-                            bussies.forEach { bussy ->
-                                val members = guild(bussy.serverId).getMembers(100)
-                                picked += members[members.indices.random()]
+                        while (isActive) {
+                            if (bussies.size == 0) {
+                                delay(pingInterval.seconds)
+                                continue
                             }
 
-                            bussyIteration = 0
-                        }
+                            if (bussyIteration == iterationCount || bussyIteration == 0) {
+                                logger.debug { "Refreshing users" }
+                                picked.clear()
 
-                        bussies.forEachIndexed { index, bussy ->
-                            val target = picked.getOrNull(index)
-                            target
-                                ?.user
-                                ?.id
-                                ?.let { id ->
-                                    channel(bussy.channelId).sendMessage(bussy.message.replace("@author", "<@$id>"))
+                                bussies.forEach { bussy ->
+                                    val members = guild(bussy.serverId).getMembers(100)
+                                    picked += members[members.indices.random()]
                                 }
-                        }
 
-                        delay(pingInterval.seconds)
-                        bussyIteration++
+                                bussyIteration = 0
+                            }
+
+                            bussies.forEachIndexed { index, bussy ->
+                                val target = picked.getOrNull(index)
+                                target
+                                    ?.user
+                                    ?.id
+                                    ?.let { id ->
+                                        channel(bussy.channelId).sendMessage(bussy.message.replace("@author", "<@$id>"))
+                                    }
+                            }
+
+                            delay(pingInterval.seconds)
+                            bussyIteration++
+                        }
                     }
                 }
             }

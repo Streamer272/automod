@@ -19,5 +19,4 @@ out/
 ### ENV ###
 src/main/resources/.env
 .env
-creds/gcloud.json
-creds/discord
+creds/
